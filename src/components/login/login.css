@@ -1,0 +1,143 @@
+input::-ms-reveal,
+input::-ms-clear {
+  display: none;
+}
+.otp-div::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input::-webkit-credentials-auto-fill-button,
+input::-webkit-clear-button,
+input::-webkit-password-toggle-button {
+  display: none !important;
+  appearance: none;
+}
+
+*{
+    margin: 0;
+}
+.hcenter{
+    justify-content: center;
+}
+.vcenter{
+    align-items: center;
+}
+.loginImageDiv{
+    display: flex;
+    background-color: #363bba;
+    height: 100vh;
+    width: 50%;
+    align-items: center;
+    justify-content: center;
+}
+.logoDiv{
+    margin-bottom: 0px;
+}
+.loginImage{
+    height: 33%;
+    width: 33%; 
+}
+.container{
+    display: flex;
+}
+
+.logoImageDiv{
+    display:block;
+    flex-direction: row;
+    height: 1%;
+    margin: 0px;
+}
+.loginPage{
+    margin-top: 3%;
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center; */
+    align-items: center;
+}
+.startLine{
+    font-size: 40px;
+    font-weight: 600;
+    margin: 0;
+    margin-top: 20px;
+}
+
+.secondLine{
+    margin: 0;
+    margin-bottom: 40px;
+    font-size: 14px;
+    font-weight: 500;
+    color: rgba(110, 110, 110, 1);
+}
+
+.input{
+    border-radius: 8px;
+    display: flex;
+    margin-bottom: 10px;
+    border: 0px;
+    height: 52px;
+    width: 460px;
+    background-color: rgba(245, 249, 254, 1);
+}
+
+.input-link-div{
+    display: flex;
+    align-items:start;
+    justify-content: end;
+    right: 0;
+    margin-bottom: 10px;
+}
+
+.input-link{
+    size: 14px;
+    font-weight: 500;
+    color: rgba(54, 47, 183, 1);
+    text-decoration: underline;
+}
+
+.inputs{
+    height: 52px;
+    width: 460px;
+}
+
+.signin{
+    background-color: rgba(54, 59, 186, 1);
+    color: white;
+    border-radius: 8px;
+    align-items: center;
+    justify-content: center;
+    margin-top: 16px;
+    font-size: 16px;
+    font-weight: 500;
+}
+.signin-options{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 6px;
+}
+.otp-div{
+    height: 54px;
+    width:54px;
+    background-color: rgba(245, 249, 254, 1);
+    border: 1px solid rgba(234, 239, 245, 1);
+    border-radius: 12px;
+    margin-right: 23px;
+    margin-bottom: 16px;
+    text-align: center;
+}
+
+.loader {
+  border: 3px solid #f3f3f3;       /* Light gray */
+  border-top: 3px solid rgb(75, 27, 219);     /* White spinner */
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  animation: spin 1s linear infinite;
+  display: inline-block;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
