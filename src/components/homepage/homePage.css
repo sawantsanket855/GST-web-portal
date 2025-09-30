@@ -3,9 +3,11 @@
     height: 100vh;
     /* color: aquamarine; */
     /* background-color: aqua; */
-    border-radius: 10px;
+  
     border-bottom-right-radius: 10px;
-    position: relative;
+    border-top-right-radius:10px;
+    position:fixed;
+    background-color: #363bba;
 }
 
 .logoDivHome{
@@ -21,30 +23,33 @@
     padding-bottom: 7%;
     margin-bottom: 5px;
     /* width: 100%; */
-    box-shadow:0 4px 15px 3px rgba(0,0,0,0.2);
+    box-shadow:0 4px 15px 3px rgba(157, 157, 157, 0.2);
+    color: rgb(202, 204, 204);
 }
 
 .selectedNavOptions{
     font-size: 18px;
     font-weight: bold;
-    color: #363bba;
+    color: white;
     padding-top: 7%;
     padding-left: 5%;
     padding-bottom: 7%;
     margin-bottom: 5px;
     /* width: 100%; */
-    box-shadow:0 1px 15px 10px rgba(46, 4, 236, 0.2);
+    box-shadow:0 1px 15px 10px rgba(255, 255, 255, 0.2);
 }
 
            
 .content{
     height: 90vh;
     width: 80%;
-    background-color:  #363bba;
+    /* background-color:  #363bba; */
     padding:5vh;
+    color: black;
+    margin-left: 20%;
 }
 .sumbitRequest{
-    color: white;
+    color: black
 }
 .sectionTitle{
     font-size: 35px;
@@ -63,4 +68,58 @@
     border:1px solid rgb(40, 28, 105);
     margin-right: 20px;
     /* box-shadow: 0px 1px 1px 1px grey; */
+}
+
+.requestCard{
+    border: 1px solid black;
+    margin: 20px;
+    padding: 20px 20px 20px 20px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    /* background-color: rgb(254, 161, 161); */
+}
+
+.requestCardLabel{
+    font-size: medium;
+    font-weight: 600;
+    margin: 5px;
+}
+.requestCardItem{
+    font-size: large;
+  
+}
+.dataItem{
+    font-weight: 800;
+}
+.documentLabelDiv{
+    margin: 10px;
+    display: flex;
+    padding: 5px;
+    border-radius: 10px;
+    height: 5vh;
+    /* background-color: #363bba; */
+    border:1px solid black;
+    align-items: center;
+}
+.saveButton{
+    padding: 12px 10px;
+    background-color: #363bba;
+    color: aliceblue;
+    width: 100px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.statusDiv{
+    display: flex;
+    width: 100px;
+    height: 30px;
+    background-color:rgb(255, 107, 107);
+    /* border-radius: 10px; */
+    align-items: center;
+    justify-content: center;
+    border: 1px solid black;
 }

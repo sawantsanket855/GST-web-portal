@@ -1,12 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState,useContext } from 'react';
 import './homePage.css'
+import {CaCsRegistration} from './ca_cs_registration'
+import {storeRequest,getRequestDocument} from './homepage_logic'
 import Logo from '../assets/Logo.png'
+import WhiteLogo from '../assets/logo_white.svg'
+import { ShowMyRequest } from './showRequest';
+import { AppContext } from '../provider'
+import { VerifyRequestList } from './verify_request/verify_request_list';
 export const Homepage = () => {
+    const { setRequestPageIndex } = useContext(AppContext);
     const [selectedOption, setSelectedOption] = useState(0);
     return (
         <div style={{ display: 'flex' }}>
             <div className='navBar'>
-                <img className="logoDivHome" src={Logo} alt="Logo" />
+                <img className="logoDivHome" src={WhiteLogo} alt="Logo" />
                 <div
                     onClick={() => {
                         setSelectedOption(0);
@@ -22,6 +29,7 @@ export const Homepage = () => {
                 </div>
                 <div
                     onClick={() => {
+                        setRequestPageIndex(0)
                         setSelectedOption(2);
                     }} className={selectedOption === 2 ? 'selectedNavOptions' : 'navOptions'}>
                     My Request
@@ -30,24 +38,40 @@ export const Homepage = () => {
                     onClick={() => {
                         setSelectedOption(3);
                     }} className={selectedOption === 3 ? 'selectedNavOptions' : 'navOptions'}>
-                    Balance
+                    CA/CS Registration
                 </div>
                 <div
                     onClick={() => {
                         setSelectedOption(4);
-                    }} className={selectedOption === 4 ? 'selectedNavOptions' : 'navOptions'} style={{ position: 'absolute', bottom: '0px', width: '95%' }}>
+                    }} className={selectedOption === 4 ? 'selectedNavOptions' : 'navOptions'}>
+                    Request Verification
+                </div>
+                <div 
+                    onClick={() => {
+                        setSelectedOption(5);
+                    }} className={selectedOption === 5 ? 'selectedNavOptions' : 'navOptions'} style={{ position: 'absolute', bottom: '0px', width: '95%' }}>
                     login
                 </div>
             </div>
             <div className='content'>
-                {submitRequest()}
+                {selectedOption === 1 && <SubmitRequest />}
+                {selectedOption === 2 && <ShowMyRequest />}
+                {selectedOption === 3 && <CaCsRegistration />}
+                {selectedOption === 4 && <VerifyRequestList />}
+                {/* {SubmitRequest()} */}
             </div>
         </div>
     )
 }
 
 
-function submitRequest() {
+const SubmitRequest=()=> {
+    const [type,setType]=useState('others');
+    const [name,setName]=useState('');
+    const [email,setEmail]=useState('');
+    const [mobile,setMobile]=useState('');
+    const [description,setDescription]=useState('');
+    const [files,setMyFiles]=useState([]);
     return (
         <div className='sumbitRequest'>
             <span className='sectionTitle'>
@@ -56,13 +80,15 @@ function submitRequest() {
             <div style={{ display: 'flex' }}>
                 <div style={{ width: '50%' }}>
                     <div className='inputLabel'>
-                        Request Type
+                        Service
                     </div>
-                    <select className='inputItem' style={{ height: '5vh' }} name="type" id="type">
-                        <option value="type1">Type1</option>
-                        <option value="type2">Type2</option>
-                        <option value="type3">Type3</option>
-                        <option value="type4">Type4</option>
+                    <select className='inputItem' style={{ height: '5vh' }} name="type" id="type" onClick={(e)=>{setType(e.target.value)}}>
+                        <option value="Accounting and Audit">Accounting and Audit</option>
+                        <option value="Taxation">Taxation</option>
+                        <option value="Corporate Compliance">Corporate Compliance</option>
+                        <option value="Corporate Governance and Legal">Corporate Governance and Legal</option>
+                        <option value="Taxation">Taxation</option>
+                        <option value="Financial and Business Advisory">Financial and Business Advisory</option>
                     </select>
                 </div>
 
@@ -70,7 +96,7 @@ function submitRequest() {
                     <div className='inputLabel'>
                         Customer Name
                     </div>
-                    <input className='inputItem' type="text" />
+                    <input className='inputItem' type="text" value={name} onChange={(e)=>{setName(e.target.value)}}/>
                 </div>
 
             </div>
@@ -80,14 +106,14 @@ function submitRequest() {
                         <div className='inputLabel'>
                             Email
                         </div>
-                        <input className='inputItem' type="email" />
+                        <input className='inputItem' type="email" value={email} onChange={(e)=>{setEmail(e.target.value)}}/>
                 </div>
 
                 <div style={{ marginLeft: '0%', width: '50%' }}>
                     <div className='inputLabel'>
                         Phone
                     </div>
-                    <input className='inputItem' type="number" />
+                    <input className='inputItem' type="number" value={mobile} onChange={(e)=>{setMobile(e.target.value)}}/>
                 </div>
 
             </div>
@@ -95,27 +121,30 @@ function submitRequest() {
                         <div className='inputLabel'>
                             Description
                         </div>
-                        <textarea style={{height:'10vh'}} className='inputItem' name="dexcription" id="dexcription"></textarea>
+                        <textarea style={{height:'10vh'}} className='inputItem' name="dexcription" id="dexcription" value={description} onChange={(e)=>{setDescription(e.target.value)}}></textarea>
                 </div>
 
                 <div style={{ width: '50%' }}>
                         <div className='inputLabel'>
                             Upload Documents
                         </div>
-                        <input type="file" multiple className='inputItem' />
+                        <input onChange={(e)=>{setMyFiles(e.target.files)}} type="file" multiple className='inputItem' />
                         <p style={{fontSize:'10px'}}>You can upload multiple files(PDF, JPG, PNG)</p>
                 </div>
 
                 <div style={{display:'flex' ,marginTop:'20px'}}>
-                    <div className='button' style={{backgroundColor:'blue '}}>
+                    <div onClick={()=>{
+                        {
+                        storeRequest(type,name,email,mobile,description,files)}
+                    }} className='button' style={{backgroundColor:'blue ',color:'white'}}>
                         Submit Request
                     </div>
-                    <div className='button' style={{backgroundColor:'white',color:'black'}}>
+                    <div onClick={()=>{
+                        // {getRequestDocument();}
+                    }} className='button' style={{backgroundColor:'white',color:'black'}}>
                         Clear
                     </div>
                 </div>
-
-            
         </div>
     )
 }

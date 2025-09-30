@@ -10,6 +10,8 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import { Homepage } from './components/homepage/homepage.jsx';
 import { SendOtp } from './components/login/send_otp.jsx';
 import { SendResetPasswordEmail } from './components/login/send_reset_password.jsx';
+import ResetToHome from './components/homepage/resetToHome.jsx';
+import { ShowRequestDetails } from './components/homepage/showRequestDetailsPage.jsx';
 
 
 function App() {
@@ -26,6 +28,8 @@ function App() {
         <Route path="/homepage" element={<Homepage/>}/>
         <Route path="/sendotp" element={<SendOtp/>}/>
         <Route path="/sendresetpassword" element={<SendResetPasswordEmail/>}/>
+        <Route path="/reset_to_home" element={<ResetToHome/>}/>
+        <Route path="/requestdetails/:data" element={<ShowRequestDetails/>}/>
       </Routes>
     
   );

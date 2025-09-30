@@ -34,19 +34,23 @@ export const Otp = () => {
     };
 
     async function joinOTP(){
-        if(!policy){
-            alert('please accept terms of service')
-            return
-        }
+        // if(!policy){
+        //     alert('please accept terms of service')
+        //     return
+        // }
         setLoader(true)
         let otp=inputRef.current[0].value+inputRef.current[1].value+inputRef.current[2].value+inputRef.current[3].value
         const response= await submitOTP(email,otp)
         if(response==='correct otp'){
-            navigate('/homepage');
+            navigate('/homepage',{replace:true});
+            // window.history.pushState(null, "", "/homepage");
+            alert('login successful');
             setLoader(false)
+        }else{
+            alert(response);
+            setLoader(false);
         }
-        alert(response)
-        setLoader(false)
+        
     }
     return (
         <div className='container'>
@@ -69,10 +73,10 @@ export const Otp = () => {
                             <input maxLength={1} type='text' key={2} className="otp-div" ref={(el) => inputRef.current[2] = el} onChange={(e) => handleChange(e, 2)} onKeyDown={(e) => handleKeyDown(e, 2)}/>
                             <input maxLength={1} type='text' key={3} className="otp-div" ref={(el) => inputRef.current[3] = el} onChange={(e) => handleChange(e, 3)} onKeyDown={(e) => handleKeyDown(e, 3)}/>
                         </div>
-                        <div onClick={()=>{setPolicy(!policy)}} style={{ display: 'flex', alignItems: 'center' }}>
-                            <img src={policy?select:unselect} alt="" />
-                            <p style={{ fontSize: '14px', fontWeight: '400', marginLeft: '15px' }}> <span style={{ color: 'rgba(97, 103, 125, 1)' }}>I’m agree to the </span> <span style={{ color: 'rgba(54, 59, 186, 1)' }}> Terms of Service</span> <span style={{ color: 'rgba(97, 103, 125, 1)' }}>and </span><span style={{ color: 'rgba(54, 59, 186, 1)' }}> Privacy Policy</span> </p>
-                        </div>
+                        {/* <div onClick={()=>{setPolicy(!policy)}} style={{ display: 'flex', alignItems: 'center' }}> */}
+                            {/* <img src={policy?select:unselect} alt="" /> */}
+                            {/* <p style={{ fontSize: '14px', fontWeight: '400', marginLeft: '15px' }}> <span style={{ color: 'rgba(97, 103, 125, 1)' }}>I’m agree to the </span> <span style={{ color: 'rgba(54, 59, 186, 1)' }}> Terms of Service</span> <span style={{ color: 'rgba(97, 103, 125, 1)' }}>and </span><span style={{ color: 'rgba(54, 59, 186, 1)' }}> Privacy Policy</span> </p> */}
+                        {/* </div> */}
                         <div className='input signin' onClick={()=>{
                             joinOTP();
                             }}>{loader? <div className='loader'></div> :<span>Submit</span>} </div>

@@ -1,5 +1,7 @@
 
-let server_address='https://etymo-5cpb.onrender.com';
+// let server_address='https://etymo-5cpb.onrender.com';
+let server_address='http://127.0.0.1:8000';
+
 
 export async function checkuser(email, password) {
   try {
