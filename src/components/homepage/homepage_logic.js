@@ -1,7 +1,7 @@
 
 
 // let server_address = 'http://127.0.0.1:8000/';
-let server_address='http://127.0.0.1:8000';
+let server_address='https://etymo-5cpb.onrender.com/';
 
 
 
@@ -47,7 +47,13 @@ export async function getRequestDocument(id) {
         );
         const data = await response.json()
         console.log(data)
-        return data.result
+        if(!data.result || data.result.length==0){
+            console.log("returning empty data")
+           return []
+        }
+        console.log("returning data")
+         return data.result
+        
     } catch (error) {
         console.log(error)
     }
@@ -138,5 +144,46 @@ export async function updateRequestStatus(requestID,requestStatus,requestInstruc
         console.log(data)
     }catch(error){
         console.log(error)
+    }
+}
+
+
+export async function getCaCsData(){
+    try {
+        const response = await fetch(`${server_address}get_ca_cs_data/`,
+            { method: 'POST' }
+        );
+        const data = await response.json()
+        console.log(data)
+        console.log(data.result)
+        return data.result
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export async function assignCaCs(caCsId,requestId){
+    try{
+        const response= await fetch(`${server_address}assign_ca_cs/`,
+            {
+                method:'POST',
+                headers:{
+                    'Content-Type':'application/json'
+                },
+                body:JSON.stringify(
+                    {
+                        ca_cs_id : caCsId,
+                        request_id : requestId,
+                    }
+                )
+            }
+        )
+        const data=await response.json()
+        console.log(`result in asssignCaCs ${data.result}`)
+        return data.result
+    }
+    catch(e){
+        console.log(`error in asssignCaCs ${e}`)
+        return 'unable fetch server'
     }
 }

@@ -7,6 +7,7 @@ import WhiteLogo from '../assets/logo_white.svg'
 import { ShowMyRequest } from './showRequest';
 import { AppContext } from '../provider'
 import { VerifyRequestList } from './verify_request/verify_request_list';
+import { ShowVerifiedRequestList } from './assign_ca_cs/show_verified_request'
 export const Homepage = () => {
     const { setRequestPageIndex } = useContext(AppContext);
     const [selectedOption, setSelectedOption] = useState(0);
@@ -42,22 +43,31 @@ export const Homepage = () => {
                 </div>
                 <div
                     onClick={() => {
+                        setRequestPageIndex(0);
                         setSelectedOption(4);
                     }} className={selectedOption === 4 ? 'selectedNavOptions' : 'navOptions'}>
                     Request Verification
                 </div>
-                <div 
+                <div
+                    onClick={() => {
+                        setRequestPageIndex(0);
+                        setSelectedOption(5);
+                    }} className={selectedOption === 5 ? 'selectedNavOptions' : 'navOptions'}>
+                    Assign Request
+                </div>
+                {/* <div 
                     onClick={() => {
                         setSelectedOption(5);
                     }} className={selectedOption === 5 ? 'selectedNavOptions' : 'navOptions'} style={{ position: 'absolute', bottom: '0px', width: '95%' }}>
                     login
-                </div>
+                </div> */}
             </div>
             <div className='content'>
                 {selectedOption === 1 && <SubmitRequest />}
                 {selectedOption === 2 && <ShowMyRequest />}
                 {selectedOption === 3 && <CaCsRegistration />}
                 {selectedOption === 4 && <VerifyRequestList />}
+                {selectedOption === 5 && <ShowVerifiedRequestList/>}
                 {/* {SubmitRequest()} */}
             </div>
         </div>

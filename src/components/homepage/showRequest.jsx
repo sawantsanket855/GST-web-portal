@@ -34,7 +34,7 @@ export const ShowMyRequest = () => {
     return <div>
         {data.map((item, index) => (
             <div className='requestCard'
-             style={{backgroundColor:item[6]==='Under Review'?'rgb(247, 247, 179)':item[6]==='Rejected'?'rgb(254, 161, 161)':'rgb(201, 220, 162)'}}
+             style={{backgroundColor:item[6]==='Under Review'?'rgb(247, 247, 179)':item[6]==='Rejected'?'rgb(254, 161, 161)':item[6]==='Assigned'?'rgba(185, 229, 252, 1)':'rgb(201, 220, 162)'}}
              onClick={()=>{
                 // navigate(`/requestdetails/${item}`)
                 setCurrentItemData(item)
@@ -52,7 +52,7 @@ export const ShowMyRequest = () => {
                 </div>
 
                 <div>
-                    <div className='statusDiv' style={{backgroundColor:item[6]==='Under Review'?'rgba(253, 253, 102, 1)':item[6]==='Rejected'?'rgba(253, 113, 113, 1)':'rgba(191, 225, 123, 1)'}}>
+                    <div className='statusDiv' style={{backgroundColor:item[6]==='Under Review'?'rgba(253, 253, 102, 1)':item[6]==='Rejected'?'rgba(253, 113, 113, 1)':item[6]==='Assigned'?'rgba(145, 213, 250, 1)':'rgba(191, 225, 123, 1)'}}>
                         {item[6]}
                     </div>
                 </div>
