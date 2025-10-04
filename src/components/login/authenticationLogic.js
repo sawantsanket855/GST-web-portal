@@ -3,7 +3,7 @@ let server_address='https://etymo-5cpb.onrender.com';
 // let server_address='http://127.0.0.1:8000';
 
 
-export async function checkuser(email, password) {
+export async function checkuser(email, password ,loginType) {
   try {
     const response = await fetch(`${server_address}/login/`, {
       method: "POST",
@@ -13,13 +13,15 @@ export async function checkuser(email, password) {
       body: JSON.stringify({
         email: email,
         password: password,
+        loginType:loginType
       }),
     });
     const data = await response.json();
     if (response.status === 200) {
       if (data.message === 'correct credentials') {
         localStorage.setItem("loged email", email)
-      }
+        localStorage.setItem("token", data.token)}
+        localStorage.setItem("loginType",loginType)
       return data.message;
     }
     return 'error'

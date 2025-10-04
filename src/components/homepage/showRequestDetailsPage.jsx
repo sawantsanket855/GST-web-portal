@@ -97,14 +97,14 @@ export const ShowRequestDetails = ({requestData}) => {
                                 <div className='inputLabel'>
                                     Status
                                 </div>
-                                <p className='dataItem'>Under Review</p>
+                                <p className='dataItem'>{requestData[6]}</p>
                         </div>
         
                         <div style={{ marginLeft: '0%', width: '40%' }}>
                             <div className='inputLabel'>
                                 Instruction
                             </div>
-                            <p className='dataItem'>None</p>
+                            <p className='dataItem'>{requestData[7]?requestData[7]:'None'}</p>
                         </div>
         
                     </div>

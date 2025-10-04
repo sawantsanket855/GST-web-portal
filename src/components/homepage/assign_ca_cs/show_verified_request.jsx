@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { getRequestData,assignCaCs } from '../homepage_logic';
+import { getVerifiedRequestData,assignCaCs } from '../homepage_logic';
 import { format } from "date-fns";
 import { AppContext } from '../../provider'
 import { ShowRequestDetails } from '../showRequestDetailsPage';
@@ -7,7 +7,7 @@ import { ShowCaCsList } from './show_ca_cs_list'
 
 
 export const ShowVerifiedRequestList = () => {
-    const {selectedCaCsId } = useContext(AppContext);
+    const {selectedCaCsId ,setSelectedCaCsId} = useContext(AppContext);
     const { requestPageIndex, setRequestPageIndex } = useContext(AppContext);
     const [currentItemData, setCurrentItemData] = useState([]);
     const [data, setData] = useState([]);
@@ -15,7 +15,7 @@ export const ShowVerifiedRequestList = () => {
     const [loading, setLoading] = useState(true);
     const fetchData = async () => {
             try {
-                let result = await getRequestData();
+                let result = await getVerifiedRequestData();
                 setData(result);
                 console.log('result:', result)
             } catch (err) {
@@ -30,7 +30,7 @@ export const ShowVerifiedRequestList = () => {
     if (loading) return <p>Loading...</p>;
 
     return <>
-        {requestPageIndex == 0 ? (showRequestList(data)) : (<ShowRequestDetails requestData={currentItemData} />)}
+        {requestPageIndex == 0 ? (showRequestList(data))  : (<ShowRequestDetails requestData={currentItemData} />)}
     </>
 
     function showRequestList(data) {
@@ -56,6 +56,7 @@ export const ShowVerifiedRequestList = () => {
                         </div>
                         <div onClick={() => {
                             setCurrentItemData(item)
+                            setSelectedCaCsId(0);
                             setShowPopUp(true)
                         }} className='button' style={{ backgroundColor: 'aliceblue' }}>
                             Assign
@@ -87,8 +88,17 @@ export const ShowVerifiedRequestList = () => {
                             } className="button">Cancel</div>
                             <div onClick={
                                 async()=>{
+                                    if(selectedCaCsId===0){
+                                        alert('Select CA/CS')
+                                        return
+                                    }
                                    const response=await assignCaCs(selectedCaCsId,currentItemData[0]);
-                                   alert(response);
+                                   if(response==='success'){
+                                    alert('Request Assigned Successfully!')
+                                   }else{
+                                    alert(response);
+                                   }
+                                   
                                    fetchData();
                                    setShowPopUp(false);
                                 }

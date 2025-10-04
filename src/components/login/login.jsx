@@ -20,6 +20,7 @@ export const Login = () => {
     const [show, setShow] = useState(false);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [loginType, setLoginType] = useState("Agent");
     return (
         <div className='container'>
             <div className='loginImageDiv'><img className='loginImage' src={login} alt="login image" /></div>
@@ -49,7 +50,15 @@ export const Login = () => {
                             </div>
                             <div className='input-link-div'><a className='input-link' href='/sendresetpassword'>Forgot Password</a></div>
                         </div>
+                        <div className='input signin'>
+                            <select className='select' onClick={(e)=>{setLoginType(e.target.value)}}>
+                                <option className='select-option' value="Agent">Agent</option>
+                                <option className='select-option' value="Admin">Admin</option>
+                            </select>
+                        
+                        </div>
                         <div onClick={async() =>{
+                            console.log(loginType)
                             if(email===''){
                                 setEmailInputError(true);
                                 return
@@ -58,7 +67,7 @@ export const Login = () => {
                                 return
                             }
                             setLoader(true);  
-                           let result = await checkuser(email, password)
+                           let result = await checkuser(email, password ,loginType)
                            if(result==='invalid credentials'){
                                 setEmailInputError(true);
                                 setPasswordInputError(true);

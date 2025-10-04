@@ -18,6 +18,31 @@ export const CaCsRegistration = () => {
         const [checkSun,setCheckSun] = useState(false);
         const [myCertificate,setMyCertificate]=useState([]);
         const [myIdProof,setMyIdProof]=useState([]);
+
+         function validateEmail(str) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(str.trim());
+    }
+    function isAlphabetWithSpace(str){
+        return /^[A-Za-z\s]+$/.test(str);
+    }
+
+        function clear(){
+            setRole('CA');
+            setSpecialization('Taxation');
+            setName('');
+            setEmail('');
+            setMobile('');
+            setRegNumber('');
+            setCheckMon(false);
+            setCheckTue(false);
+            setCheckWed(false);
+            setCheckThur(false);
+            setCheckFri(false);
+            setCheckSat(false);
+            setCheckSun(false);
+            document.getElementById("MyCertificate").value = "";
+            document.getElementById("MyIdProof").value = "";
+        }
     return <div className='sumbitRequest'>
                 <span className='sectionTitle'>
                     CA/CS Registration
@@ -84,12 +109,12 @@ export const CaCsRegistration = () => {
                             <div className='inputLabel'>
                                 Upload Certificate
                             </div>
-                            <input onChange={(e)=>{setMyCertificate(e.target.files)}} type="file" className='inputItem' />
+                            <input onChange={(e)=>{setMyCertificate(e.target.files)}} id='MyCertificate' type="file" className='inputItem' />
                             <p style={{fontSize:'10px'}}>You can upload only one file(PDF, JPG, PNG)</p>
                             <div className='inputLabel'>
                                 Upload ID Proof
                             </div>
-                            <input onChange={(e)=>{setMyIdProof(e.target.files)}} type="file" className='inputItem' />
+                            <input onChange={(e)=>{setMyIdProof(e.target.files)}} type="file" id='MyIdProof' className='inputItem' />
                             <p style={{fontSize:'10px'}}>You can upload only one file(PDF, JPG, PNG)</p>
                     </div>
                     <div style={{ width: '50%' }}>
@@ -117,14 +142,31 @@ export const CaCsRegistration = () => {
 
                     <div style={{display:'flex' ,marginTop:'20px'}}>
                         <div onClick={()=>{
-                            {
-                            storeCaCsDetails(name,specialization,role,email,mobile,regNumber,['mon','tue','thus'],myCertificate,myIdProof)
+                            
+                                if(name===''|| email==='' || mobile==='' ){
+                            alert('Fill mandatory data');
+                            return
                         }
+                        if(!validateEmail(email)){
+                            alert ('Enter valid eamil ID');
+                            return
+                        }
+                        if(!isAlphabetWithSpace(name)){
+                            alert('Enter valid name')
+                            return
+                        }
+                        if(mobile.length!==10){
+                            alert('Enter 10 digit mobile number');
+                            return
+                        }
+                            storeCaCsDetails(name,specialization,role,email,mobile,regNumber,['mon','tue','thus'],myCertificate,myIdProof)
+                            clear();
+                        
                         }} className='button' style={{backgroundColor:'blue ',color:'white'}}>
                             Register
                         </div>
                         <div onClick={()=>{
-                            // {getRequestDocument();}
+                            clear();
                         }} className='button' style={{backgroundColor:'white',color:'black'}}>
                             Clear
                         </div>

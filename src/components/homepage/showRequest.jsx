@@ -44,7 +44,7 @@ export const ShowMyRequest = () => {
             }
                 }>
                 <div>
-                    <p><span className='requestCardLabel'>Request ID :  </span><span className='requestCardItem'>{item[0]}</span></p>
+                <p><span className='requestCardLabel'>Request ID :  </span><span className='requestCardItem'>{item[0]}</span></p>
                 <p><span className='requestCardLabel'>Customer Name :  </span><span className='requestCardItem'>{item[1]}</span></p>
                 <p><span className='requestCardLabel'>Request Type :  </span><span className='requestCardItem'>{item[2]}</span></p>
                 <p><span className='requestCardLabel'>Customer Email :  </span><span className='requestCardItem'>{item[3]}</span></p>

@@ -1,14 +1,12 @@
 import React, { useState, useEffect ,useContext } from 'react';
 import { AppContext } from '../../provider'
 import { getRequestDocument,showRequestDocument,updateRequestStatus } from '../homepage_logic';
-import { format } from "date-fns";
-import { useParams, useLocation } from 'react-router-dom';
 import '../homePage.css'
 import backArrow from '../../assets/arrow_back.svg'
 
 export const VerifyRequestDetail = ({requestData}) => {
     console.log(`this is data : ${requestData}`)
-    const [status,setStatus]=useState('Under Review');
+    const [status,setStatus]=useState(requestData[6]);
     const [instruction,setInstruction]=useState('');
     const {setRequestPageIndex} = useContext(AppContext);
     const [documents, setDocumnets] = useState([]);
@@ -98,7 +96,7 @@ export const VerifyRequestDetail = ({requestData}) => {
                                 <div className='inputLabel'>
                                     Update Status
                                 </div>
-                                <select style={{color:status=='Under Review'?'blue':status=='Rejected'?'red':'green'}} className='dataItem' name="status" id="status"  onClick={(e)=>{setStatus(e.target.value)}}>
+                                <select style={{color:status=='Under Review'?'blue':status=='Rejected'?'red':'green'}}className='dataItem' name="status" id="status"  value={status} onChange={(e)=>{setStatus(e.target.value)}}>
                                     <option style={{color:'blue'}} value="Under Review">Under Review</option>
                                     <option style={{color:'red'}} value="Rejected">Rejected</option>
                                     <option style={{color:'green'}} value="Verified">Verified</option>
@@ -116,7 +114,8 @@ export const VerifyRequestDetail = ({requestData}) => {
                     </div>
                     <div onClick={()=>{
                         updateRequestStatus(requestData[0],status,instruction)
-                        alert('changes saved');setRequestPageIndex(0)
+                        alert('changes saved');
+                        setRequestPageIndex(0);
                         }} className='saveButton'>Save Changes</div>
         </div>
     </div>

@@ -23,6 +23,19 @@ input::-webkit-password-toggle-button {
 .vcenter{
     align-items: center;
 }
+
+.select{
+    
+    background-color: transparent;
+    color:white;
+    border:none;
+    outline: none;
+}
+.select-option{
+    margin: 100px;
+    font-size: 15px;
+    color: black;
+}
 .loginImageDiv{
     display: flex;
     background-color: #363bba;
