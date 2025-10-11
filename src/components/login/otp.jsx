@@ -43,8 +43,6 @@ export const Otp = () => {
         const response= await submitOTP(email,otp)
         if(response==='correct otp'){
             navigate('/homepage',{replace:true});
-            // window.history.pushState(null, "", "/homepage");
-            alert('login successful');
             setLoader(false)
         }else{
             alert(response);
@@ -80,7 +78,7 @@ export const Otp = () => {
                         <div className='input signin' onClick={()=>{
                             joinOTP();
                             }}>{loader? <div className='loader'></div> :<span>Submit</span>} </div>
-                        <div className='signin-options'>
+                        {/* <div className='signin-options'>
                             <div className='input' style={{ width: '303px', display: 'flex', alignItems: 'center' }}>
                                 <div style={{ height: '32', marginLeft: '30px', marginRight: '20px' }}> <img src={google} alt="" /></div>
                                 <span style={{ color: 'rgba(79, 79, 79, 1)', fontSize: '14', fontWeight: '500' }}>Sign In with Google</span>
@@ -92,7 +90,7 @@ export const Otp = () => {
                             </div>
                             <div className='input hcenter vcenter' style={{ width: '51px' }}>
                                 <img src={apple} alt="" /></div>
-                        </div>
+                        </div> */}
                         <div style={{ display: 'flex', justifyContent: 'right' }}>
                             <span style={{ fontSize: '14', fontWeight: '500', color: 'rgba(79, 79, 79, 1)', marginRight: '7px' }}>
                                 Not Registered Yet?

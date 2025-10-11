@@ -91,15 +91,15 @@ export const VerifyRequestDetail = ({requestData}) => {
                     }
                 </div>
             </div>
-            <div style={{ display: 'flex' }}>
+            <div style={{ display: 'flex'}}>
                         <div style={{ width: '50%' }}>
                                 <div className='inputLabel'>
                                     Update Status
                                 </div>
                                 <select style={{color:status=='Under Review'?'blue':status=='Rejected'?'red':'green'}}className='dataItem' name="status" id="status"  value={status} onChange={(e)=>{setStatus(e.target.value)}}>
-                                    <option style={{color:'blue'}} value="Under Review">Under Review</option>
-                                    <option style={{color:'red'}} value="Rejected">Rejected</option>
-                                    <option style={{color:'green'}} value="Verified">Verified</option>
+                                    <option style={{color:'blue'}} value="Under Review">Pending for Admin Review</option>
+                                    <option style={{color:'red'}} value="Rejected">Rejected by Admin</option>
+                                    <option style={{color:'green'}} value="Verified">Verified by Admin</option>
                                 </select>
                                 
                         </div>
@@ -112,7 +112,8 @@ export const VerifyRequestDetail = ({requestData}) => {
                         </div>
         
                     </div>
-                    <div onClick={()=>{
+                    <div style={{marginTop:'40px'}}
+                     onClick={()=>{
                         updateRequestStatus(requestData[0],status,instruction)
                         alert('changes saved');
                         setRequestPageIndex(0);

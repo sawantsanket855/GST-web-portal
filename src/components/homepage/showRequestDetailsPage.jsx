@@ -1,15 +1,14 @@
 import React, { useState, useEffect ,useContext } from 'react';
 import { AppContext } from '../provider'
 import { getRequestDocument,showRequestDocument } from './homepage_logic';
-import { format } from "date-fns";
-import { useParams, useLocation } from 'react-router-dom';
+
 import './homePage.css'
 import backArrow from '../assets/arrow_back.svg'
+
 
 export const ShowRequestDetails = ({requestData}) => {
     console.log(`this is data : ${requestData}`)
     const {setRequestPageIndex} = useContext(AppContext);
-    const { data } = useParams();
     const [documents, setDocumnets] = useState([]);
     const [loading, setLoading] = useState(true);
     useEffect(() => {

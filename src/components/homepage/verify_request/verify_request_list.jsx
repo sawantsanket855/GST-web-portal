@@ -40,7 +40,7 @@ export const VerifyRequestList = () => {
         
     // fetchData();
     return <div>
-        {data.map((item, index) => (
+        {data.map((item, index) => ( 
             <div className='requestCard' onClick={()=>{
                 // navigate(`/requestdetails/${item}`)
                 setCurrentItemData(item)

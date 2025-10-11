@@ -1,0 +1,118 @@
+.title-demo{
+    font-size: 40px;
+    font-weight: 300;
+    font-family: 'Roboto';
+    margin: 35px 0 17px 42px;
+}
+
+*{
+    font-family: 'Roboto';
+}
+
+.content-div-demo{
+    height: 100%;
+    width: 90%;
+    /* background-color: aliceblue; */
+    /* align-self: center; */
+    border-radius: 12px;
+    box-shadow: 0px 1px 2px grey;
+    
+}
+
+.form-header-demo{
+    font-family: 'Roboto';
+    font-weight: 300;
+    font-size: 30px;
+    margin-bottom: 24px;
+}
+
+.input-div-demo{
+    position: relative;
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 40px;
+    width: 100%;
+}
+
+.input-label-demo{
+    font-size: 24px;
+    font-weight: 100;
+    color: rgb(70, 70, 70);
+}
+
+.input-box-demo{
+    position:absolute;
+    margin-left: 400px;
+    margin-bottom: 20px;
+    font-size: 16px;
+    padding-left: 10px;
+    /* margin-right: 250px; */
+    height: 54px;
+    width: 400px;
+    border-radius: 6px;
+    border: 1px solid rgba(190, 190, 190, 1);
+}
+
+.input-file-box-demo{
+    position:absolute;
+    margin-left: 400px;
+    margin-bottom: 20px;
+    font-size: 16px;
+    padding-left: 10px;
+    height: 54px;
+    border: 1px solid rgba(190, 190, 190, 1);
+}
+
+.submit-button{
+    height: 60px;
+    width:340px;
+    background-color: rgba(55, 101, 165, 1);
+    border-radius: 8px;
+    color: white;
+    font-size: 24px;
+    font-weight: 400;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.request-count-div{
+    width: 33%;
+    text-align: center;
+    padding: 25px;
+}
+.requets-count{
+    font-size: 40px;
+    font-weight: 600;
+    font-family: 'Roboto';
+}
+.requets-count-type{
+    font-size: 30px;
+    font-weight: 300;
+    font-family: 'Roboto';
+}
+.request-table-item{
+    text-align: center;
+    width: 16%;
+    padding: 10px;
+    font-size:20px;
+    font-weight:100
+}
+.view-button{
+    padding: 5px 10px;
+    color: blue;
+    border-radius: 10px;
+    background-color: rgba(164, 219, 245, 0.3)
+}
+
+.submit-button-variable{
+    font-size:15px;
+    padding: 10px 15px;
+    background-color: rgba(55, 101, 165, 1);
+    border-radius: 8px;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

@@ -61,7 +61,7 @@ export const SendOtp = () => {
                             }
                         }}>  
                         {!loader? <span>Send OTP</span> : <div className='loader'></div> } </div>
-                        <div className='signin-options'>
+                        {/* <div className='signin-options'>
                             <div className='input' style={{ width: '303px', display: 'flex', alignItems: 'center' }}>
                                 <div style={{ height: '32', marginLeft: '30px', marginRight: '20px' }}> <img src={google} alt="" /></div>
                                 <span style={{ color: 'rgba(79, 79, 79, 1)', fontSize: '14', fontWeight: '500' }}>Sign In with Google</span>
@@ -73,7 +73,7 @@ export const SendOtp = () => {
                             </div>
                             <div className='input hcenter vcenter' style={{ width: '51px' }}>
                                 <img src={apple} alt="" /></div>
-                        </div>
+                        </div> */}
                         <div style={{ display: 'flex', justifyContent: 'right' }}>
                             <span style={{ fontSize: '14', fontWeight: '500', color: 'rgba(79, 79, 79, 1)', marginRight: '7px' }}>
                                 Not Registered Yet?

@@ -1,0 +1,15 @@
+
+
+.footer-div{
+    justify-content: space-between;
+    color: rgba(96, 96, 96, 1);
+    font-size: 16;
+    font-family: 'Roboto';
+    height: 100%;
+    width:100%;
+    display:flex;
+    padding-left: 23px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    /* padding: 10px 50px 12px 23px; */
+}

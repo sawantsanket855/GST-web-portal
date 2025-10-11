@@ -78,7 +78,11 @@ export const CaCsRegistration = () => {
                         <div className='inputLabel'>
                             Phone
                         </div>
-                        <input className='inputItem' type="number" value={mobile} onChange={(e)=>{setMobile(e.target.value)}}/>
+                        <input className='inputItem' type="number" value={mobile} onChange={(e)=>{
+                            if(e.target.value.length<=10){
+                                setMobile(e.target.value);
+                            }
+                            }}/>
                     </div>
     
                 </div>
@@ -109,12 +113,31 @@ export const CaCsRegistration = () => {
                             <div className='inputLabel'>
                                 Upload Certificate
                             </div>
-                            <input onChange={(e)=>{setMyCertificate(e.target.files)}} id='MyCertificate' type="file" className='inputItem' />
+                            <input onChange={(e)=>{
+                                const maxFileSize=5*1024*1024;
+                                for(let file of e.target.files){
+                                    if(file.size>maxFileSize){
+                                        alert(`File "${file.name}" is too large. Max size is 5 MB.`);
+                                        document.getElementById("MyCertificate").value = "";
+                                        return
+                                    }
+                                }
+                                 setMyCertificate(e.target.files)}}
+                                 id='MyCertificate' type="file" className='inputItem' />
                             <p style={{fontSize:'10px'}}>You can upload only one file(PDF, JPG, PNG)</p>
                             <div className='inputLabel'>
                                 Upload ID Proof
                             </div>
-                            <input onChange={(e)=>{setMyIdProof(e.target.files)}} type="file" id='MyIdProof' className='inputItem' />
+                            <input onChange={(e)=>{
+                                const maxFileSize=5*1024*1024;
+                                for(let file of e.target.files){
+                                    if(file.size>maxFileSize){
+                                        alert(`File "${file.name}" is too large. Max size is 5 MB.`);
+                                        document.getElementById("MyIdProof").value = "";
+                                        return
+                                    }
+                                }
+                                setMyIdProof(e.target.files)}} type="file" id='MyIdProof' className='inputItem' />
                             <p style={{fontSize:'10px'}}>You can upload only one file(PDF, JPG, PNG)</p>
                     </div>
                     <div style={{ width: '50%' }}>
@@ -140,7 +163,7 @@ export const CaCsRegistration = () => {
                     </div>
                 </div>
 
-                    <div style={{display:'flex' ,marginTop:'20px'}}>
+                    <div style={{display:'flex' ,marginTop:'40px'}}>
                         <div onClick={()=>{
                             
                                 if(name===''|| email==='' || mobile==='' ){
