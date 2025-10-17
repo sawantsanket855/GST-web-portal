@@ -12,7 +12,6 @@ import { SendOtp } from './components/login/send_otp.jsx';
 import { SendResetPasswordEmail } from './components/login/send_reset_password.jsx';
 import ResetToHome from './components/homepage/resetToHome.jsx';
 import { ShowRequestDetails } from './components/homepage/showRequestDetailsPage.jsx';
-import PaymentDetailsForm from './components/agent_homepage/payment_detail_form.jsx';
 
 
 
@@ -31,7 +30,6 @@ function App() {
         <Route path="/sendresetpassword" element={<SendResetPasswordEmail/>}/>
         <Route path="/reset_to_home" element={<ResetToHome/>}/>
         <Route path="/requestdetails/:data" element={<ShowRequestDetails/>}/>
-        <Route path="/payment_request_form" element={<PaymentDetailsForm/>}/>
       </Routes>
     
   );

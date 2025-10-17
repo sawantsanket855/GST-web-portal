@@ -26,7 +26,7 @@ export const AdminSidebar=()=>{
                 }
             } className= {sidebarIndex===1?'sidebar-option selected':'sidebar-option'}>
                 <img src={homeIcon} alt="home" style={{marginRight:'16px'}}/>
-                Leads / Requests
+                All Requests
             </div>
             <div onClick={
                 ()=>{
@@ -35,17 +35,17 @@ export const AdminSidebar=()=>{
                 }
             } className= {sidebarIndex===2?'sidebar-option selected':'sidebar-option'}>
                 <img src={homeIcon} alt="home" style={{marginRight:'16px'}}/>
-                Register CA/CS
+                Show All CA/CS List
             </div>
-            {/* <div onClick={
+            <div onClick={
                 ()=>{
                     setPageIndex(0);
                     setSidebarIndex(3);
                 }
             } className= {sidebarIndex===3?'sidebar-option selected':'sidebar-option'}>
                 <img src={homeIcon} alt="home" style={{marginRight:'16px'}}/>
-                CAs / CSs
-            </div> */}
+                Register CA/CS
+            </div>
             <div onClick={
                 ()=>{
                     setPageIndex(0);
@@ -53,7 +53,7 @@ export const AdminSidebar=()=>{
                 }
             } className= {sidebarIndex===4?'sidebar-option selected':'sidebar-option'}>
                 <img src={homeIcon} alt="home" style={{marginRight:'16px'}}/>
-                Payments
+                Payment Requests
             </div>
             <div onClick={
                 ()=>{

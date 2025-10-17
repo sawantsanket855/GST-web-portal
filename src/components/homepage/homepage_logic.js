@@ -4,7 +4,6 @@ let server_address = 'http://127.0.0.1:8000/';
 // let server_address='https://etymo-5cpb.onrender.com/';
 
 
-
 export async function storeRequest(type, name, email, mobile, description, documents) {
     console.log('in storeRequest')
     const token=localStorage.getItem('token');
@@ -44,6 +43,8 @@ export async function storeRequest(type, name, email, mobile, description, docum
 
 export async function getRequestDocument(id) {
     try {
+        // console.log('in getRequestDocument')
+        console.log('id in getRequestDocument:', id)
         const response = await fetch(`${server_address}get_request_document/`,
             {
                 headers: {
@@ -207,5 +208,54 @@ export async function assignCaCs(caCsId,requestId){
     catch(e){
         console.log(`error in asssignCaCs ${e}`)
         return 'unable fetch server'
+    }
+}
+
+
+export async function getPaymentRequestDocument(id) {
+    try {
+        // console.log('in getRequestDocument')
+        console.log('id in getPaymentRequestDocument:', id)
+        const response = await fetch(`${server_address}get_payment_request_document/`,
+            {
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                method: 'POST',
+                body: JSON.stringify({ id: id })
+            }
+        );
+        const data = await response.json()
+        if(!data.result || data.result.length==0){
+            console.log("returning empty data")
+           return []
+        }
+        console.log("returning data")
+         return data.result
+        
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+
+export async function verifyPaymentRequest(paymentRequestID,requestInstruction){
+    try{
+        const respose= await fetch(`${server_address}verifyPaymentRequest/`,
+            {
+                headers:{
+                    'Content-Type':'application/json'
+                },
+                method:'POST',
+                body: JSON.stringify({paymentRequestID:paymentRequestID,requestInstruction:requestInstruction})
+
+            }
+        )
+        const data=await respose.json()
+        console.log(data.message)
+        return data.message
+    }catch(error){
+        console.log(error)
+        return 'error'
     }
 }

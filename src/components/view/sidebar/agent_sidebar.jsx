@@ -26,7 +26,7 @@ export const AgentSidebar=()=>{
                 }
             } className= {sidebarIndex===1?'sidebar-option selected':'sidebar-option'}>
                 <img src={homeIcon} alt="home" style={{marginRight:'16px'}}/>
-                Leads / Requests
+                Submit Request
             </div>
             <div onClick={
                 ()=>{
@@ -35,17 +35,17 @@ export const AgentSidebar=()=>{
                 }
             } className= {sidebarIndex===2?'sidebar-option selected':'sidebar-option'}>
                 <img src={homeIcon} alt="home" style={{marginRight:'16px'}}/>
-                New Request
+                All Requests
             </div>
-            {/* <div onClick={
+            <div onClick={
                 ()=>{
                     setPageIndex(0);
                     setSidebarIndex(3);
                 }
             } className= {sidebarIndex===3?'sidebar-option selected':'sidebar-option'}>
                 <img src={homeIcon} alt="home" style={{marginRight:'16px'}}/>
-                CAs / CSs
-            </div> */}
+                Payment Request
+            </div>
             <div onClick={
                 ()=>{
                     setPageIndex(0);
@@ -53,7 +53,7 @@ export const AgentSidebar=()=>{
                 }
             } className= {sidebarIndex===4?'sidebar-option selected':'sidebar-option'}>
                 <img src={homeIcon} alt="home" style={{marginRight:'16px'}}/>
-                Payments
+                Payment Details
             </div>
             <div onClick={
                 ()=>{

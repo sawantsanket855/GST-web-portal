@@ -1,19 +1,24 @@
-import React, { useState ,useEffect} from 'react';
+import React, { useState ,useEffect,useContext} from 'react';
 import './../agent_page.css'
 import dayjs from "dayjs";
-import CancleSvg from '../../../assets/cancle.svg'
+import backArrow from '../../../assets/arrow_back.svg'
+import { AppContext } from '../../../provider.jsx'
 import { getRequestDocument, showRequestDocument } from '../../../controller/agent_data_controller';
-export const UpdateRequest = (requestData) => {
+import { assignCaCs, updateRequestStatus } from '../../../homepage/homepage_logic.js';
+import { ShowCaCsList } from '../../../homepage/assign_ca_cs/show_ca_cs_list.jsx';
+export const UpdateRequest = ({requestData}) => {
+    const [showPopUp, setShowPopUp] = useState(false);
     const [documents, setDocumnets] = useState([]);
+    const {selectedCaCsId ,setSelectedCaCsId} = useContext(AppContext);
+    const {pageIndex, setPageIndex } = useContext(AppContext);
+    // const documents = [['102', 'Form15.pdf'], ['102', 'Form18.jpg']];
     const activityLog = [['request assigned to Anil Mehta', '05 oct 25'], ['request accepted by Admin', '05 oct 25']]
 
     const dateFormat = (timestamp) => {
         // return 6
         return dayjs(timestamp).format("DD MMM YYYY")
     }
-    const [loading, setLoading] = useState(true);
-    useEffect(() => {
-        const fetchData = async () => {
+    const fetchData = async () => {
             try {
                 let result = await getRequestDocument(requestData[0]);
                 setDocumnets(result);
@@ -24,6 +29,8 @@ export const UpdateRequest = (requestData) => {
                 setLoading(false);
             }
         };
+    const [loading, setLoading] = useState(true);
+    useEffect(() => {
         fetchData();
     }, []);
     if (loading) return <p>Loading...</p>;
@@ -31,7 +38,21 @@ export const UpdateRequest = (requestData) => {
         <div style={{ display: 'flex', alignItems: 'center', margin: '30px 50px 17px 42px', justifyContent: 'space-between' }}>
             <p className='title-demo' style={{ margin: '0' }}>Request Details</p>
             <div style={{ display: 'flex' }}>
-                <div className='submit-button-variable' style={{ marginRight: '30px' }}>Update Request</div>
+                <div 
+                onClick={()=>{
+                    if(requestData[6] === 'Under Review'){
+                        updateRequestStatus(requestData[0],'Approved','none');
+                        alert('changes saved');
+                        setPageIndex(2);
+                    }if(requestData[6]==='Approved'){
+                        setShowPopUp(true);
+                    }if(requestData[6]=='Assigned'){
+
+                    }
+                }}
+                 className='submit-button-variable' style={{ marginRight: '30px' }}>
+                    {requestData[6] === 'Under Review' ? 'Approve Request' :requestData[6] === 'Approved'? 'Assign CA/CS':'Assigned'}
+                </div>
                 <div className='submit-button-variable'>Close Request</div>
             </div>
         </div>
@@ -118,6 +139,55 @@ export const UpdateRequest = (requestData) => {
                 </div>
             </div>
         </div>
+    
+    {/* show popup */}
+    
+    {showPopUp ?
+                        <div style={{
+                            border: '1px solid black',
+                            borderRadius: '10px',
+                            position: "fixed", top: "10%", right: '50px', width: "25%", height: "80%",
+                            backgroundColor: "aliceblue",  justifyContent: "center", alignItems: "center"
+                        }}>
+                            <h2 style={{margin:'10px'}}>
+                                Select CA/CS
+                            </h2>
+                            <div style={{height:'80%', overflowY: 'auto', backgroundColor:'white', border:'1px solid black',margin:'0px 15px',borderRadius:'5px'}}>
+                                <ShowCaCsList/>
+                            </div>
+                            <div style={{display:'flex',justifyContent:'center',marginTop:'10px'}}>
+                                <div onClick={
+                                    ()=>{
+                                        setShowPopUp(false);
+                                    }
+                                } className="button">Cancel</div>
+                                <div onClick={
+                                    async()=>{
+                                        if(selectedCaCsId===0){
+                                            alert('Select CA/CS')
+                                            return
+                                        }
+                                       const response=await assignCaCs(selectedCaCsId,requestData[0]);
+                                       if(response==='success'){
+                                        requestData[6]='Assigned';
+                                        alert('Request Assigned Successfully!')
+                                       }else{
+                                        alert(response);
+                                       }
+                                       
+                                       fetchData();
+                                       setShowPopUp(false);
+                                    }
+                                }
+                                 className="button">Assign</div>
+                            </div>
+                            
+                        </div>
+                    : <div></div>}
+
+    {/* show PopUp */}
+
+
 
     </div>
 

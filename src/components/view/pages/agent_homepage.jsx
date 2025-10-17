@@ -5,11 +5,15 @@ import { Footer } from '../footer/footer';
 import './agent_page.css'
 import { SubmitRequest } from './agent/submit_request';
 import { AllRequests } from './agent/all_requests';
+import { PaymentRequest } from './agent/payment_request';
+import { PaymentDetailsList } from './agent/payment_details_list';
 import { RegisterCACS } from './admin/register_ca_cs';
 import { UpdateRequest } from './admin/update_request';
 import { AppContext } from '../../provider'
 import { AllRequestsAdmin } from './admin/all_request_admin';
+import { AllCACS } from './admin/all_ca_cs';
 import { AdminSidebar } from '../sidebar/admin_sidebar';
+import { PaymentDetailsVerifyList } from './admin/payment_details_list_verify';
 const loginType = localStorage.getItem('loginType');
 
 
@@ -18,11 +22,16 @@ const loginType = localStorage.getItem('loginType');
 export const Homepage = () => {
     const getScreen=()=>{
         if(loginType==='Agent'){
-            if(sidebarIndex === 1) return <AllRequests />
-            if(sidebarIndex === 2 ) return <SubmitRequest />
-        }else{
-            if(sidebarIndex === 1) return <AllRequestsAdmin />
-            if(sidebarIndex === 2 ) return <RegisterCACS/>
+            if(sidebarIndex === 1) return <SubmitRequest />
+            if(sidebarIndex === 2 ) return <AllRequests />
+            if(sidebarIndex === 3 ) return <PaymentRequest />
+            if(sidebarIndex === 4 ) return <PaymentDetailsList />
+        }else if(loginType==='Admin'){
+            if(sidebarIndex === 1) return <AllRequestsAdmin/>
+            if(sidebarIndex === 2 ) return <AllCACS/>
+            if(sidebarIndex === 3 ) return <RegisterCACS/>
+            if(sidebarIndex === 4 ) return <PaymentDetailsVerifyList/>
+            
         }
     }
     const {sidebarIndex} = useContext(AppContext);

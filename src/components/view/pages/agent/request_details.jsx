@@ -35,7 +35,7 @@ export const RequestDetails = ({requestData}) => {
                 <span onClick={()=>{setPageIndex(0)}} style={{marginRight:'10px'}}><img src={backArrow} alt="" /></span>
             <p className='title-demo' style={{ margin: '0' }}>Request Details</p>
             </div>
-            <div className='submit-button-variable' style={{ marginRight: '30px' }}>Cancle Request</div>
+            <div className='submit-button-variable' style={{ marginRight: '30px' }}>Cancel Request</div>
         </div>
         
         <div style={{ width: '100%', minHeight: '80%', display: 'flex', justifyContent: 'center' }}>

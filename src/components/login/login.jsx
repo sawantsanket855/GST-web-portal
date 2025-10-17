@@ -77,7 +77,7 @@ export const Login = () => {
                             // alert('Login successfull')
                             setLoader(false);  
                             navigate('/homepage',{replace:true})
-                            
+                            window.location.reload();
                            }else{
                             alert(result)
                            }

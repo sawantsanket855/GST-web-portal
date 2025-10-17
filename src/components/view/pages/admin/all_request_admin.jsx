@@ -5,53 +5,86 @@ import { AppContext } from '../../../provider.jsx'
 import { getRequestData } from '../../../controller/agent_data_controller';
 import { UpdateRequest } from './update_request.jsx';
 export const AllRequestsAdmin = () => {
+    const [pendingRequestCount , setPendingRequestCount]=useState(0); 
+    const [assignedRequestCount , setAssignedRequestCount]=useState(0);
+    const [completedRequestCount , setCompletedRequestCount]=useState(0);
     const {pageIndex, setPageIndex } = useContext(AppContext);
     const [currentItemData, setCurrentItemData] = useState([]);
     const [requestList, setRequestList] = useState([]);
+    const [filteredRequestList, setFilteredRequestList] = useState([]);
     const [loading, setLoading] = useState(true);
     const [filter, setFilter] = useState('All');
     const showRequestDetails = (item) => {
+        console.log('saving current selected request data to show update request page')
+        console.log('show data in current item:', item)
         setCurrentItemData(item)
-        console.log(item)
+        console.log('show data in currentItemData:', item)
         setPageIndex(1)
     }
     const dateFormat = (timestamp) => {
         // return 6
         return dayjs(timestamp).format("DD MMM YYYY")
     }
+
+    const filterRequests = (requests, statusFilter) => {
+        if (statusFilter === 'All') {
+            return requests;
+        }
+        return requests.filter(item => item[6] === statusFilter);
+    }
+
     const fetchData = async () => {
         try {
             let result = await getRequestData();
             setRequestList(result);
+            setFilteredRequestList(result);
             console.log('result:', result)
+            const pendingCount = result.filter(item => item[6] === 'Under Review').length;
+            const assignedCount = result.filter(item => item[6] === 'Assigned').length;
+            const completedCount = result.filter(item => item[6] === 'Completed').length;
+            setPendingRequestCount(pendingCount);
+            setAssignedRequestCount(assignedCount);
+            setCompletedRequestCount(completedCount);
         } catch (err) {
             console.error("Error fetching:", err);
         } finally {
             setLoading(false);
         }
+        
     };
 
     useEffect(() => {
         fetchData();
     }, []);
 
+    useEffect(() => {
+        const filtered = filterRequests(requestList, filter);
+        setFilteredRequestList(filtered);
+      
+    }, [filter, requestList]);
+
     if (loading) return <p>Loading...</p>;
     if (pageIndex==1) return <UpdateRequest requestData={currentItemData}/>;
+    if(pageIndex==2){
+        fetchData();
+        setPageIndex(0);
+    }
+    
     return <div>
         <p className='title-demo'>All Requests</p>
         <div style={{ width: '100%', minHeight: '80%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center  ' }}>
             <div className='content-div-demo'>
                 <div style={{ display: 'flex' }}>
                     <div className='request-count-div'>
-                        <p className='requets-count'>25</p>
+                        <p className='requets-count'>{assignedRequestCount}</p>
                         <p className='request-count-type'>Assigned Requests</p>
                     </div>
                     <div className='request-count-div'>
-                        <p className='requets-count'>08</p>
+                        <p className='requets-count'>{pendingRequestCount}</p>
                         <p className='request-count-type'>Pending Requests</p>
                     </div>
                     <div className='request-count-div'>
-                        <p className='requets-count'>15</p>
+                        <p className='requets-count'>{completedRequestCount}</p>
                         <p className='request-count-type'>Completed Requests</p>
                     </div>
                 </div>
@@ -59,9 +92,9 @@ export const AllRequestsAdmin = () => {
             <div className='content-div-demo' style={{ marginTop: '20px', paddingBottom: '20px' }}>
                 <div style={{ display: 'flex', padding: '30px 20px' }}>
                     <span style={{ fontSize: '20px', fontWeight: '500', marginRight: '10px' }}>Status</span>
-                    <select name="status" id="status" style={{ border: '1px solid grey', borderRadius: '5px', textAlign: 'center' }} onClick={(e) => { setFilter(e.target.value) }}>
+                    <select name="status" id="status" style={{ border: '1px solid grey', borderRadius: '5px', textAlign: 'center' }} onChange={(e) => { setFilter(e.target.value) }}>
                         <option value="All">All</option>
-                        <option value="Pending">Pending</option>
+                        <option value="Under Review">Under Review</option>
                         <option value="Assigned">Assigned</option>
                         <option value="Completed">Completed</option>
                         <option value="Rejected">Rejected</option>
@@ -76,24 +109,21 @@ export const AllRequestsAdmin = () => {
                     <div className='request-table-item'>Action</div>
                 </div>
                 <hr style={{ margin: '10px 20px' }} />
-                {requestList.map((item, index) => (
-                    false ? <div></div> :
-                        <div>
-                            <div style={{ display: 'flex', justifyItems: 'space-around' }}>
-                                <div className='request-table-item'>{item[0]}</div>
-                                <div className='request-table-item'>{dateFormat(item[8])}</div>
-                                <div className='request-table-item'>{item[1]}</div>
-                                <div className='request-table-item'>{item[2]}</div>
-                                <div className='request-table-item'>{item[6]}</div>
-                                <div onClick={
-                                    () => {showRequestDetails(item)}
-                                }
-                                    className='request-table-item' style={{ color: 'blue' }}>View Details</div>
-                            </div>
-                            {requestList.length != index + 1 ? <hr style={{ margin: '10px 20px' }} /> : ''}
+                {filteredRequestList.map((item, index) => (
+                    <div key={index}>
+                        <div style={{ display: 'flex', justifyItems: 'space-around' }}>
+                            <div className='request-table-item'>{item[0]}</div>
+                            <div className='request-table-item'>{dateFormat(item[8])}</div>
+                            <div className='request-table-item'>{item[1]}</div>
+                            <div className='request-table-item'>{item[2]}</div>
+                            <div className='request-table-item'>{item[6]}</div>
+                            <div onClick={
+                                () => {showRequestDetails(item)}
+                            }
+                                className='request-table-item' style={{ color: 'blue' }}>View Details</div>
                         </div>
-
-
+                        {filteredRequestList.length != index + 1 ? <hr style={{ margin: '10px 20px' }} /> : ''}
+                    </div>
                 ))}
             </div>
         </div>

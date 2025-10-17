@@ -29,7 +29,6 @@ export const ShowCaCsList = ({requestData}) => {
                 // setCurrentItemData(item);
                 setSelectedCard(index);
                 setSelectedCaCsId(item[0]);
-                
             }
                 }>
             <div>
