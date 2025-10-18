@@ -1,23 +1,40 @@
 import React, { useState, useContext } from 'react';
 import '../agent_page.css'
 import { AppContext } from '../../../provider.jsx'
+import { getCaCsDocument, showCaCsDocument } from '../../../controller/agent_data_controller.js';
 
 export const CaCsDetails = ({ currentItem, onBack, onUpdate }) => {
     const { setPageIndex } = useContext(AppContext);
     const [isEditing, setIsEditing] = useState(false);
     const [editedData, setEditedData] = useState({});
+    const [documents, setDocumnets] = useState([]);     
+    const [loading, setLoading] = useState(true);
+            React.useEffect(() => {
+                const fetchData = async () => {
+                    try {
+                        let result = await getCaCsDocument(currentItem.id);
+                        setDocumnets(result);
+                        console.log('result:', result)
+                    } catch (err) {
+                        console.error("Error fetching:", err);
+                    } finally {
+                        setLoading(false);
+                    }
+                };
+                fetchData();
+            }, []);
 
     // Initialize edited data when currentItem changes
-    React.useEffect(() => {
-        if (currentItem) {
-            setEditedData({ ...currentItem });
-            setIsEditing(false);
-        }
-    }, [currentItem]);
+    // React.useEffect(() => {
+    //     if (currentItem) {
+    //         setEditedData({ ...currentItem });
+    //         setIsEditing(false);
+    //     }
+    // }, [currentItem]);
 
-    const handleEdit = () => {
-        setIsEditing(true);
-    }
+    // const handleEdit = () => {
+    //     setIsEditing(true);
+    // }
 
     const handleInputChange = (field, value) => {
         setEditedData(prev => ({
@@ -190,8 +207,15 @@ export const CaCsDetails = ({ currentItem, onBack, onUpdate }) => {
                                 } type="file" id='certificate' />
                         ) : (
                             <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                                <p style={{ fontSize: '20px', fontWeight: '600' }}>{currentItem.certificate}</p>
-                                <div className='view-button' style={{ color: 'blue', cursor: 'pointer', fontSize: '16px' }}>view</div>
+                                <p style={{ fontSize: '20px', fontWeight: '600' }}>{documents.length>0? documents[0][1]:'none'}</p>
+                                <div className='view-button' style={{ color: 'blue', cursor: 'pointer', fontSize: '16px' }}
+                                onClick={()=>{
+                                    if(documents.length>0){
+                                        showCaCsDocument(documents[0][0])
+                                    }
+                                }
+                                }
+                                >view</div>
                             </div>
                         )}
                     </div>
@@ -225,8 +249,16 @@ export const CaCsDetails = ({ currentItem, onBack, onUpdate }) => {
                                 } type="file" id='idProof' />
                         ) : (
                             <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                                <p style={{ fontSize: '20px', fontWeight: '600' }}>{currentItem.idProof}</p>
-                                <div className='view-button' style={{ color: 'blue', cursor: 'pointer', fontSize: '16px' }}>view</div>
+                                <p style={{ fontSize: '20px', fontWeight: '600' }}>{documents.length>0?documents[1][1]:0}</p>
+                                <div className='view-button' style={{ color: 'blue', cursor: 'pointer', fontSize: '16px' }}
+                                onClick={()=>{
+                                    if(documents.length>0){
+                                        showCaCsDocument(documents[1][0])
+                                    }
+                                }
+                                    
+                                }
+                                >view</div>
                             </div>
                         )}
                     </div>
@@ -234,18 +266,18 @@ export const CaCsDetails = ({ currentItem, onBack, onUpdate }) => {
                     <div style={{ marginTop: '30px', display: 'flex', gap: '10px', padding: '20px' }}>
                         {!isEditing ? (
                             <>
-                                <div className='submit-button' onClick={handleEdit} style={{ fontSize: '14px', padding: '8px 16px' }}>
+                                {/* <div className='submit-button' onClick={handleEdit} style={{ fontSize: '14px', padding: '8px 16px' }}>
                                     Edit
-                                </div>
+                                </div> */}
                                 <div className='submit-button' onClick={handleBack} style={{ fontSize: '14px', padding: '8px 16px' }}>
                                     Back
                                 </div>
                             </>
                         ) : (
                             <>
-                                <div className='submit-button' onClick={handleUpdate} style={{ fontSize: '14px', padding: '8px 16px', backgroundColor: '#28a745' }}>
+                                {/* <div className='submit-button' onClick={handleUpdate} style={{ fontSize: '14px', padding: '8px 16px', backgroundColor: '#28a745' }}>
                                     Update
-                                </div>
+                                </div> */}
                                 <div className='submit-button' onClick={handleCancel} style={{ fontSize: '14px', padding: '8px 16px', backgroundColor: '#dc3545' }}>
                                     Cancel
                                 </div>

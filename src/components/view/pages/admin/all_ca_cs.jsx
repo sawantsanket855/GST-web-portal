@@ -2,6 +2,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import '../agent_page.css'
 import { AppContext } from '../../../provider.jsx'
 import { CaCsDetails } from './ca_cs_details'
+import { getCaCSData } from '../../../controller/agent_data_controller.js';
 
 export const AllCACS = () => {
     const { pageIndex, setPageIndex } = useContext(AppContext);
@@ -10,7 +11,7 @@ export const AllCACS = () => {
     const [loading, setLoading] = useState(true);
 
     // Sample static data based on register_ca_cs.jsx fields
-    const sampleData = [
+    var sampleData = [
         {
             id: 1,
             name: 'Amit Sharma',
@@ -49,11 +50,41 @@ export const AllCACS = () => {
         },
     ];
 
-    useEffect(() => {
-        // simulate fetch
-        setCaList(sampleData);
-        setLoading(false);
-    }, []);
+
+    const fetchData = async () => {
+        try {
+            let result = await getCaCSData();
+            console.log('result:', result)
+            sampleData = [];
+            for (const item of result) {
+                console.log('in loop')
+                sampleData.push({
+                    id: item[0],
+                    name: item[1],
+                    email: item[4],
+                    phone: item[5],
+                    role: item[2],
+                    specialization: item[3],
+                    registrationNumber: item[6],
+                    certificate: 'amit_certificate.pdf',
+                    idProof: 'amit_id.pdf',
+                    createdAt: Date.now() - 1000 * 60 * 60 * 24 * 10,
+                });
+            }
+            setCaList(sampleData);
+        } catch (err) {
+            console.error("Error fetching:", err);
+            setCaList(sampleData);
+        } finally {
+            setLoading(false);
+        }
+
+    };
+
+    React.useEffect(() => {
+        fetchData();
+    }, [])
+
 
     const dateFormat = (ts) => {
         try {
@@ -76,7 +107,7 @@ export const AllCACS = () => {
     const handleUpdate = (updatedData) => {
         // Update the current item and list
         setCurrentItem(updatedData);
-        setCaList(prev => prev.map(item => 
+        setCaList(prev => prev.map(item =>
             item.id === updatedData.id ? updatedData : item
         ));
     }
@@ -85,7 +116,7 @@ export const AllCACS = () => {
 
     if (pageIndex == 1 && currentItem) {
         return (
-            <CaCsDetails 
+            <CaCsDetails
                 currentItem={currentItem}
                 onBack={handleBack}
                 onUpdate={handleUpdate}

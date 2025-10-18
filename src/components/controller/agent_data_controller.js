@@ -201,3 +201,85 @@ export async function getPaymentRequestData() {
     }
 }
 
+export async function getCaCSData() {
+    const token=localStorage.getItem('token');
+    if(!token){
+        alert('please login');
+        return
+    }
+    try {
+        const response = await fetch(`${server_address}get_ca_cs_data/`,
+            { method: 'POST' ,
+              headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ token : token })
+            }
+        );
+        const data = await response.json()
+        console.log('in getCACSdata')
+        console.log(data.result)
+        console.log(data.message)
+        if(data.message==='success'){
+            return data.result
+        }else{
+             alert(data.message);
+            return [];
+           
+        }
+        
+    } catch (error) {
+        console.log(error)
+        alert('can\'t reach server');
+        return [];
+        
+    }
+}
+
+
+export async function getCaCsDocument(id) {
+    try {
+        const response = await fetch(`${server_address}get_ca_cs_document/`,
+            {
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                method: 'POST',
+                body: JSON.stringify({ id: id })
+            }
+        );
+        const data = await response.json()
+        console.log(data)
+        if(!data.result || data.result.length==0){
+            console.log("returning empty data")
+           return []
+        }
+        console.log("returning data")
+         return data.result
+        
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export async function showCaCsDocument(id) {
+    try {
+        const response = await fetch(`${server_address}get_ca_cs_document_data/`,
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ id: id })
+
+            }
+        );
+        const blob = await response.blob();
+        console.log(blob)
+        const url = URL.createObjectURL(blob);
+        window.open(url);
+    } catch (error) {
+        console.log(error)
+
+    }
+}

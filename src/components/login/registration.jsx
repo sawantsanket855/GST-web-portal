@@ -75,11 +75,11 @@ export const Registration = () => {
         console.log(`function called ${result}`)
         if (result === 'registered') {
             alert('registration successfull')
-            navigate('/homepage', { replace: true });
+            navigate('/login', { replace: true });
             setLoader(false);
         } else if (result === 'email already exist') {
             alert('email already registered, login with password');
-            navigate('/login')
+            navigate('/login',{ replace: true })
             setLoader(false);
         } else {
             alert(result)

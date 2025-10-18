@@ -84,7 +84,11 @@ export const RegisterCACS = () => {
                     </div>
                     <div className='input-div-demo'>
                         <span className='input-label-demo'>Phone</span>
-                        <input className='input-box-demo' type='text' value={phone} onChange={(e) => { setPhone(e.target.value) }} />
+                        <input className='input-box-demo' type='text' value={phone} onChange={(e) => {
+                            if (e.target.value.length <= 10) {
+                                setPhone(e.target.value)
+                            }
+                        }} />
                     </div>
                     <div className='input-div-demo'>
                         <span className='input-label-demo'>Role</span>

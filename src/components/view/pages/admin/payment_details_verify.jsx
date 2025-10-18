@@ -14,7 +14,13 @@ export const PaymentDetailsVerify = ({ currentItem, onBack }) => {
         const fetchData = async () => {
             try {
                 let result = await getPaymentRequestDocument(currentItem[0]);
-                setDocumnets(result);
+                if(result){
+                    setDocumnets(result);
+                    console.log('result:', result)
+                }else{
+                    setDocumnets([[0,'none']]);
+                    alert('cant fetch documnets')
+                }
                 console.log('result:', result)
             } catch (err) {
                 console.error("Error fetching:", err);
@@ -170,7 +176,11 @@ export const PaymentDetailsVerify = ({ currentItem, onBack }) => {
                         <p style={{ fontSize: '17px', fontWeight: '600' }}>{documents[0][1]}</p>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                             <div 
-                             onClick={()=>{showPaymentRequestDocument(documents[0][0])}}
+                             onClick={()=>{
+                                if(documents[0][0]>0){
+                                    showPaymentRequestDocument(documents[0][0])
+                                }
+                                }}
                              className='view-button' style={{ color: 'blue', cursor: 'pointer', fontSize: '16px', marginTop: '10px' }}>view</div>
                         </div>
                     </div>

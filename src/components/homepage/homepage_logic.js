@@ -144,6 +144,9 @@ export async function storeCaCsDetails(name,specialization,role,email,mobile,reg
         const data = await response.json()
         console.log(`success ${data.message}`)
         alert(data.message)
+        if(data.message==='submitted'){
+            return 'success';
+        }
     } catch (error) {
         alert("can't reach to server");
         console.log('error',error)
