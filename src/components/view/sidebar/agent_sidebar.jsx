@@ -62,7 +62,7 @@ export const AgentSidebar=()=>{
                 }
             } className= {sidebarIndex===5?'sidebar-option selected':'sidebar-option'}>
                 <img src={homeIcon} alt="home" style={{marginRight:'16px'}}/>
-                Reports
+                Transaction History
             </div>
             <div onClick={
                 ()=>{
@@ -91,13 +91,3 @@ export const AgentSidebar=()=>{
 
 
 
-{/* <div
-                    onClick={() => {
-
-                        if (loginType) {
-                            localStorage.clear();
-                        }
-                        navigate('/login', { replace: true })
-                    }} className='navOptions' style={{ fontSize: '18px', fontWeight: 'bolder', position: 'absolute', bottom: '0px', width: '95%' }}>
-                    {loginType ? 'Log Out' : "Log In"}
-                </div> */}

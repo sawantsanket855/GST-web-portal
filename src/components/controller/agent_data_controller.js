@@ -1,15 +1,46 @@
-let server_address = 'http://127.0.0.1:8000/';
-// let server_address='https://etymo-5cpb.onrender.com/';
+// let server_address = 'http://127.0.0.1:8000/';
+let server_address='https://etymo-5cpb.onrender.com/';
 
 export async function storeRequest(type, name, email, mobile, description, documents) {
     console.log('in storeRequest')
-    const token=localStorage.getItem('token');
-    
-    if(!token){
+    const token = localStorage.getItem('token');
+     let balance = 0;
+    if (!token) {
         alert('please login');
         return
     }
     console.log(`token : ${token}`)
+
+
+    try {
+        const response = await fetch(`${server_address}get_agent_balance/`,
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ token: token })
+            }
+        )
+        const data = await response.json()
+        if (data.result === 'success') {
+            balance = data.balance
+            console.log(balance)
+        } else {
+            alert(data.result)
+            return
+        }
+    } catch (error) {
+        console.log(error)
+        alert("can't reach server")
+        return
+    }
+
+    if (balance < 500) {
+        alert('Request submission failed due to insufficient tokens.')
+        return
+    }
+
     let formData = new FormData()
     for (let i = 0; i < documents.length; i++) {
         formData.append('documents', documents[i]);
@@ -28,7 +59,7 @@ export async function storeRequest(type, name, email, mobile, description, docum
                 body: formData,
             }
         )
-        const data=await response.json();
+        const data = await response.json();
         alert(data.message)
         return data.message
     } catch (error) {
@@ -38,36 +69,37 @@ export async function storeRequest(type, name, email, mobile, description, docum
 }
 
 export async function getRequestData() {
-    const token=localStorage.getItem('token');
-    if(!token){
+    const token = localStorage.getItem('token');
+    if (!token) {
         alert('please login');
         return
     }
     try {
         const response = await fetch(`${server_address}get_request_data/`,
-            { method: 'POST' ,
-              headers: {
+            {
+                method: 'POST',
+                headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ token : token })
+                body: JSON.stringify({ token: token })
             }
         );
         const data = await response.json()
         console.log(data)
         console.log(data.result)
-        if(data.message==='success'){
+        if (data.message === 'success') {
             return data.result
-        }else{
-             alert(data.message);
+        } else {
+            alert(data.message);
             return [];
-           
+
         }
-        
+
     } catch (error) {
         console.log(error)
         alert('can\'t reach server');
         return [];
-        
+
     }
 }
 
@@ -84,13 +116,13 @@ export async function getRequestDocument(id) {
         );
         const data = await response.json()
         console.log(data)
-        if(!data.result || data.result.length==0){
+        if (!data.result || data.result.length === 0) {
             console.log("returning empty data")
-           return []
+            return []
         }
         console.log("returning data")
-         return data.result
-        
+        return data.result
+
     } catch (error) {
         console.log(error)
     }
@@ -112,8 +144,42 @@ export async function showRequestDocument(id) {
         console.log(blob)
         const url = URL.createObjectURL(blob);
         window.open(url);
+        //start
+        // const link = document.createElement('a');
+        // link.href = url;
+        // link.download = 'example'; // You can also dynamically set this from the response
+        // document.body.appendChild(link);
+        // link.click();
+        //end
     } catch (error) {
         console.log(error)
+
+    }
+}
+
+export async function downloadRequestDocument(id,name) {
+    try {
+        const response = await fetch(`${server_address}get_request_document_data/`,
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ id: id })
+
+            }
+        );
+        const blob = await response.blob();
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = name;
+        document.body.appendChild(link);
+        link.click();
+        
+    } catch (error) {
+        console.log(error);
+        alert("error while downloading document");
 
     }
 }
@@ -142,14 +208,16 @@ export async function showPaymentRequestDocument(id) {
 }
 
 
-export async function storePaymentRequest(paymentMethod, name,amount, bankName, accountNumber, ifscCode, upiId, document) {
+export async function storePaymentRequest(paymentMethod, name, amount, bankName, accountNumber, ifscCode, upiId, document) {
     console.log('in storePaymentRequest')
-    const token=localStorage.getItem('token');
-    if(!token){
+    const token = localStorage.getItem('token');
+   
+    if (!token) {
         alert('please login');
         return
     }
     console.log(`token : ${token}`)
+
     let formData = new FormData()  //paymentMethod, name, bankName, accountNumber, ifscCode, upiId, document
     for (let i = 0; i < document.length; i++) {
         formData.append('documents', document[i]);
@@ -170,7 +238,7 @@ export async function storePaymentRequest(paymentMethod, name,amount, bankName, 
                 body: formData,
             }
         )
-        const data=await response.json();
+        const data = await response.json();
         alert(data.message)
         return data.message
     } catch (error) {
@@ -183,9 +251,10 @@ export async function storePaymentRequest(paymentMethod, name,amount, bankName, 
 
 export async function getPaymentRequestData() {
     try {
-        const token=localStorage.getItem('token');
+        const token = localStorage.getItem('token');
         const response = await fetch(`${server_address}get_payment_request_data/`,
-            { method: 'POST' ,
+            {
+                method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
@@ -202,37 +271,40 @@ export async function getPaymentRequestData() {
 }
 
 export async function getCaCSData() {
-    const token=localStorage.getItem('token');
-    if(!token){
+    console.log('in getCaCSData')
+    const token = localStorage.getItem('token');
+    if (!token) {
         alert('please login');
         return
     }
+    console.log(token)
     try {
         const response = await fetch(`${server_address}get_ca_cs_data/`,
-            { method: 'POST' ,
-              headers: {
+            {
+                method: 'POST',
+                headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ token : token })
+                body: JSON.stringify({ token: token })
             }
         );
         const data = await response.json()
         console.log('in getCACSdata')
         console.log(data.result)
         console.log(data.message)
-        if(data.message==='success'){
+        if (data.message === 'success') {
             return data.result
-        }else{
-             alert(data.message);
+        } else {
+            alert(data.message);
             return [];
-           
+
         }
-        
+
     } catch (error) {
         console.log(error)
         alert('can\'t reach server');
         return [];
-        
+
     }
 }
 
@@ -250,13 +322,13 @@ export async function getCaCsDocument(id) {
         );
         const data = await response.json()
         console.log(data)
-        if(!data.result || data.result.length==0){
+        if (!data.result || data.result.length === 0) {
             console.log("returning empty data")
-           return []
+            return []
         }
         console.log("returning data")
-         return data.result
-        
+        return data.result
+
     } catch (error) {
         console.log(error)
     }
@@ -281,5 +353,57 @@ export async function showCaCsDocument(id) {
     } catch (error) {
         console.log(error)
 
+    }
+}
+
+export async function getBalance() {
+    try {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            alert('please login');
+            return
+        }
+        const response = await fetch(`${server_address}get_agent_balance/`,
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ token: token })
+            }
+        )
+        const data = await response.json()
+        if (data.result === 'success') {
+            return data.balance
+        } else {
+            alert(data.result)
+            return data.balance
+        }
+    }
+    catch (error) {
+        console.log(error)
+
+    }
+}
+
+
+export async function getTransactionData() {
+    try {
+        const token = localStorage.getItem('token');
+        const response = await fetch(`${server_address}get_transaction_data/`,
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ token: token })
+            }
+        );
+        const data = await response.json()
+        console.log(data)
+        console.log(data.result)
+        return data.result
+    } catch (error) {
+        console.log(error)
     }
 }

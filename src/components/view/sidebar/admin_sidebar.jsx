@@ -62,7 +62,7 @@ export const AdminSidebar=()=>{
                 }
             } className= {sidebarIndex===5?'sidebar-option selected':'sidebar-option'}>
                 <img src={homeIcon} alt="home" style={{marginRight:'16px'}}/>
-                Reports
+                Transaction History
             </div>
             <div onClick={
                 ()=>{

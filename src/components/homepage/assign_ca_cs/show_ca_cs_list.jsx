@@ -1,5 +1,5 @@
 import React, { useState, useEffect,useContext } from 'react';
-import {getCaCsData} from '../homepage_logic';
+import {getCaCSData} from '../../controller/agent_data_controller';
 import { AppContext } from '../../provider'
 
 export const ShowCaCsList = ({requestData}) => {
@@ -10,7 +10,7 @@ export const ShowCaCsList = ({requestData}) => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                let result = await getCaCsData();
+                let result = await getCaCSData();
                 setData(result);
                 console.log('result:', result)
             } catch (err) {

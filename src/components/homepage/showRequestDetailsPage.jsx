@@ -1,6 +1,6 @@
 import React, { useState, useEffect ,useContext } from 'react';
 import { AppContext } from '../provider'
-import { getRequestDocument,showRequestDocument } from './homepage_logic';
+import { getRequestDocument,showRequestDocument1 } from './homepage_logic';
 
 import './homePage.css'
 import backArrow from '../assets/arrow_back.svg'
@@ -79,7 +79,7 @@ export const ShowRequestDetails = ({requestData}) => {
                 </div>
                 <div style={{ display: 'flex' }}>
                     {documents.map((document, index) => (
-                        <div onClick={()=>{showRequestDocument(document[0])}} className='documentLabelDiv'>
+                        <div onClick={()=>{showRequestDocument1(document[0])}} className='documentLabelDiv'>
                             <p>
                                 {document[1]}
                             </p>
