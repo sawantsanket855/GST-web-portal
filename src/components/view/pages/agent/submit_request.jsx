@@ -70,7 +70,7 @@ export const SubmitRequest = () => {
                     <div className='input-div-demo'>
                         <span className='input-label-demo'>Service</span>
                         {/* <input className='input-box-demo' type='text'/> */}
-                        <select className='input-box-demo' style={{ width: '410px' }} name="type" id="type"  onClick={(e) => { setType(e.target.value) }}>
+                        <select className='input-box-demo' style={{ width: '410px' }} name="type" id="type" onClick={(e) => { setType(e.target.value) }}>
                             <option value="Accounting and Audit">Accounting and Audit</option>
                             <option value="Taxation">Taxation</option>
                             <option value="Corporate Compliance">Corporate Compliance</option>

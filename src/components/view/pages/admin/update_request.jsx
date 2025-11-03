@@ -1,13 +1,17 @@
 import React, { useState, useEffect, useContext } from 'react';
 import './../agent_page.css'
+import CancleSvg from '../../../assets/cancle.svg'
 import dayjs from "dayjs";
 import backArrow from '../../../assets/arrow_back.svg'
 import { AppContext } from '../../../provider.jsx'
-import { downloadRequestDocument, getRequestDocument, showRequestDocument } from '../../../controller/agent_data_controller';
+import { completeWork, downloadRequestDocument, getRequestDocument, showRequestDocument } from '../../../controller/agent_data_controller';
 import { assignCaCs, updateRequestStatus } from '../../../homepage/homepage_logic.js';
 import { ShowCaCsList } from '../../../homepage/assign_ca_cs/show_ca_cs_list.jsx';
 export const UpdateRequest = ({ requestData }) => {
     const [showPopUp, setShowPopUp] = useState(false);
+    const [files, setMyFiles] = useState([]);
+    const [description,setDescription]=useState('');
+    const [showCompleteWorkPopup, setShowCompleteWorkPopup] = useState(false);
     const [documents, setDocumnets] = useState([]);
     const { selectedCaCsId, setSelectedCaCsId } = useContext(AppContext);
     const { pageIndex, setPageIndex } = useContext(AppContext);
@@ -37,7 +41,9 @@ export const UpdateRequest = ({ requestData }) => {
     return <div>
         <div style={{ display: 'flex', alignItems: 'center', margin: '30px 50px 17px 42px', justifyContent: 'space-between' }}>
             <p className='title-demo' style={{ margin: '0' }}>Request Details</p>
-            <div style={{ display: 'flex' }}>
+            {
+                requestData[6] === 'Completed' ? <p>Completed</p> : 
+                 <div style={{ display: 'flex' }}>
                 <div
                     onClick={() => {
                         if (requestData[6] === 'Under Review') {
@@ -47,14 +53,16 @@ export const UpdateRequest = ({ requestData }) => {
                         } if (requestData[6] === 'Approved') {
                             setShowPopUp(true);
                         } if (requestData[6] == 'Assigned') {
-
+                            setShowCompleteWorkPopup(true);
                         }
                     }}
                     className='submit-button-variable' style={{ marginRight: '30px' }}>
-                    {requestData[6] === 'Under Review' ? 'Approve Request' : requestData[6] === 'Approved' ? 'Assign CA/CS' : 'Assigned'}
+                    {requestData[6] === 'Under Review' ? 'Approve Request' : requestData[6] === 'Approved' ? 'Assign CA/CS' :  'Complete'}
                 </div>
                 <div className='submit-button-variable'>Close Request</div>
             </div>
+            }
+           
         </div>
 
         <div style={{ width: '100%', minHeight: '80%', display: 'flex', justifyContent: 'center' }}>
@@ -144,7 +152,7 @@ export const UpdateRequest = ({ requestData }) => {
             </div>
         </div>
 
-        {/* show popup */}
+        {/* show popup ca/cs*/}
 
         {showPopUp ?
             <div style={{
@@ -189,8 +197,122 @@ export const UpdateRequest = ({ requestData }) => {
             </div>
             : <div></div>}
 
-        {/* show PopUp */}
+        {/* show PopUp ca/cs*/}
 
+
+        {/* show popup complete work*/}
+
+        {showCompleteWorkPopup ?
+            <div style={{
+                border: '1px solid black',
+                borderRadius: '10px',
+                position: "fixed", top: "10%", right: '50px', width: "25%", height: "80%",
+                backgroundColor: "aliceblue", justifyContent: "center", alignItems: "center"
+            }}>
+                <h2 style={{ margin: '10px' }}>
+                    Submit Completed Work
+                </h2>
+                <div style={{ alignContent:'start',justifyItems:'start', height: '80%', overflowY: 'auto', backgroundColor: 'white', border: '1px solid black', margin: '0px 15px', borderRadius: '5px', }}>
+                    <div style={{flexDirection:'column', display:'flex',justifyContent:'center',margin:'40px 20px',height:'50%',width:'80%'}}>
+                        <span className='input-label-demo' >Description</span>
+                        <textarea style={{width:'100%',height:'60%',padding:'10px'}} name="description" id="description" value={description} onChange={(e) => { setDescription(e.target.value) }}></textarea>
+                    </div>
+                    <div style={{display:'flex', flexDirection:'column',justifyContent:'center',margin:'40px 20px'}}>
+                        <span className='input-label-demo'>Upload Documents</span>
+                        <div  style={{ border: 'none' }}>
+                            <input
+                                style={{ height: '25px', marginBottom: '5px', }}
+                                onChange={(e) => {
+                                    console.log('in on change');
+                                    const maxFileLimit = 4
+                                    const maxFileSize = 5 * 1024 * 1024;
+                                    if (e.target.files.length > maxFileLimit) {
+                                        alert('you can select maximun 4 files')
+                                        document.getElementById("MyFiles").value = "";
+                                        return
+                                    } else {
+                                        for (let file of e.target.files) {
+                                            // console.log(file.name)
+                                            // console.log(file.size)
+                                            if (file.size > maxFileSize) {
+                                                alert(`File "${file.name}" is too large. Max size is 5 MB.`);
+                                                document.getElementById("MyFiles").value = "";
+                                                return
+                                            }
+                                        }
+                                        for (let file of e.target.files) {
+                                            const isDuplicate = files.some(f => f.name === file.name && f.size === file.size);
+                                            let newFilesCount = 0;
+                                            if (!isDuplicate) {
+                                                newFilesCount++;
+                                                if (files.length + newFilesCount > maxFileLimit) {
+                                                    alert('you can select maximun 4 files')
+                                                    return
+                                                }
+                                                setMyFiles(prev => [...prev, file]);
+
+                                            }
+                                        }
+                                        e.target.value = "";
+                                        // setMyFiles(Array.from(e.target.files))
+                                    }
+
+                                    // setMyFiles(e.target.files)
+
+                                }} type="file" id='MyFiles' multiple />
+                            <div style={{ display: 'flex' }}>
+                                {
+                                    files.length == 0 ? <span>No file selected</span> :
+                                        files.map((item, index) => (
+                                            <div style={{ display: 'flex' }}>
+                                                <div style={{ width: '70px', overflow: 'clip', height: '20px' }}>
+                                                    {item.name}
+                                                </div>
+                                                <img
+                                                    onClick={
+                                                        () => {
+                                                            setMyFiles(files => files.filter((_, i) => i !== index))
+                                                        }
+                                                    }
+                                                    style={{ height: '20px', marginRight: '15px' }}
+                                                    src={CancleSvg} alt="" />
+                                            </div>
+
+                                        ))}
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
+                    <div onClick={
+                        () => {
+                            setShowCompleteWorkPopup(false);
+                        }
+                    } className="button">Cancel</div>
+                    <div onClick={
+                        async () => {
+                            if (selectedCaCsId === 0) {
+                               
+                            }
+                            const response = await completeWork(requestData[0],description,files);
+                            if (response === 'submitted') {
+                                requestData[6] = 'Completed';
+                                alert('Request Status changed')
+                            } else {
+                                alert(response);
+                            }
+                            fetchData();
+                            setShowCompleteWorkPopup(false);
+                        }
+                    }
+                        className="button">Submit</div>
+                </div>
+
+            </div>
+            : <div></div>}
+
+        {/* show PopUp complete work*/}
 
 
     </div>

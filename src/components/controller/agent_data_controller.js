@@ -184,6 +184,33 @@ export async function downloadRequestDocument(id,name) {
     }
 }
 
+export async function downloadRequestCompletionDocument(id,name) {
+    try {
+        const response = await fetch(`${server_address}get_request_completion_document_data/`,
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ id: id })
+
+            }
+        );
+        const blob = await response.blob();
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = name;
+        document.body.appendChild(link);
+        link.click();
+        
+    } catch (error) {
+        console.log(error);
+        alert("error while downloading document");
+
+    }
+}
+
 export async function showPaymentRequestDocument(id) {
     console.log(`document:${id}`)
     try {
@@ -405,5 +432,87 @@ export async function getTransactionData() {
         return data.result
     } catch (error) {
         console.log(error)
+    }
+}
+
+
+
+
+export async function completeWork(request_id, description, documents) {
+    console.log('in completeWork')
+    console.log(documents)
+    const token = localStorage.getItem('token');
+   
+    let formData = new FormData()
+    for (let i = 0; i < documents.length; i++) {
+        formData.append('documents', documents[i]);
+        console.log('document uploaded');
+    }
+
+    formData.append('description', description);
+    formData.append('request_id', request_id);
+    formData.append('token', token);
+    console.log('in completeWork1');
+    try {
+        const response = await fetch(`${server_address}complete_request/`,
+            {
+                method: 'POST',
+                body: formData,
+            }
+        )
+        const data = await response.json();
+       
+        return data.message
+    } catch (error) {
+        console.log('error')
+        
+    }
+}
+
+export async function getRequestCompletionDocument(id) {
+    try {
+        const response = await fetch(`${server_address}get_request_completion_document/`,
+            {
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                method: 'POST',
+                body: JSON.stringify({ id: id })
+            }
+        );
+        const data = await response.json()
+        console.log(data)
+        if (!data.result || data.result.length === 0) {
+            console.log("returning empty data")
+            return []
+        }
+        console.log("returning data")
+        return data.result
+
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+
+export async function showRequestCompletionDocument(id) {
+    try {
+        const response = await fetch(`${server_address}get_request_completion_document_data/`,
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ id: id })
+
+            }
+        );
+        const blob = await response.blob();
+        console.log(blob)
+        const url = URL.createObjectURL(blob);
+        window.open(url);
+    } catch (error) {
+        console.log(error)
+
     }
 }

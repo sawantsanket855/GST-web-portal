@@ -3,9 +3,10 @@ import './../agent_page.css'
 import dayjs from "dayjs";
 import backArrow from '../../../assets/arrow_back.svg'
 import { AppContext } from '../../../provider.jsx'
-import { getRequestDocument, showRequestDocument } from '../../../controller/agent_data_controller';
+import { downloadRequestCompletionDocument, getRequestCompletionDocument, getRequestDocument, showRequestCompletionDocument, showRequestDocument } from '../../../controller/agent_data_controller';
 export const RequestDetails = ({requestData}) => {
     const [documents, setDocumnets] = useState([]);
+    const [completionDocuments, setCompletionDocumnets] = useState([]);
     const {pageIndex, setPageIndex } = useContext(AppContext);
     // const documents = [['102', 'Form15.pdf'], ['102', 'Form18.jpg']];
     const activityLog = [['request assigned to Anil Mehta', '05 oct 25'], ['request accepted by Admin', '05 oct 25']]
@@ -20,6 +21,10 @@ export const RequestDetails = ({requestData}) => {
                     let result = await getRequestDocument(requestData[0]);
                     setDocumnets(result);
                     console.log('result:', result)
+                    if(requestData[6]==='Completed'){
+                        let result1 = await getRequestCompletionDocument(requestData[0]);
+                        setCompletionDocumnets(result1);
+                    }
                 } catch (err) {
                     console.error("Error fetching:", err);
                 } finally {
@@ -103,6 +108,36 @@ export const RequestDetails = ({requestData}) => {
                         </div>
                     ))}
                 </div>
+
+                {
+                    requestData[6]==='Completed'? <div
+                     className='content-div-demo' style={{ width: '100%', paddingBottom: '20px' ,marginTop:'20px'}}>
+                    <div style={{ borderBottom: '1px solid black', padding: '10px 20px' }}>
+                        <p style={{ fontSize: '22px', fontWeight: '600' }}>Completion Details</p>
+                    </div>
+                    {completionDocuments.map((item, index) => (
+                        <div>
+                            <div style={{ padding: '20px 30px 10px 20px', display: 'flex', justifyContent: 'space-between' }}>
+                                <p style={{ fontSize: '18px', fontWeight: '600' }}>{item[1]}</p>
+                                 <div style={{display:'flex'}}>
+                                    <div onClick={() => { showRequestCompletionDocument(item[0]) }}
+                                        className='view-button'>view</div>
+                                    <div  style={{marginLeft:'10px'}} onClick={() => { downloadRequestCompletionDocument(item[0],item[1]) }}
+                                        className='view-button'>download</div>
+                                </div>
+                            </div>
+                            {documents.length != index + 1 ? <hr style={{ margin: '0 30px', }} /> : ''}
+                        </div>
+                        
+                    ))}
+                    <div style={{ padding: '20px 30px 10px 20px' }}>
+                                <p style={{ fontWeight: '600'}}>Description :</p> 
+                                <p style={{margin:'10px', fontWeight: '400'}}>{requestData[11]}</p>          
+                    </div>
+                    <p></p>
+                </div>: <div></div>
+                }
+                
                 <div className='content-div-demo' style={{ width: '100%', paddingBottom: '20px', marginTop: '20px' }}>
                     <div style={{ borderBottom: '1px solid black', padding: '10px 20px' }}>
                         <p style={{ fontSize: '22px', fontWeight: '600' }}>Activity Log</p>
