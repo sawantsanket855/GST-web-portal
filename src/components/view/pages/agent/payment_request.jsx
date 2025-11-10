@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState ,useContext} from 'react';
 import '../agent_page.css'
 import CancleSvg from '../../../assets/cancle.svg'
 import { storePaymentRequest } from '../../../controller/agent_data_controller';
-
+import { AppContext } from '../../../provider'
 export const PaymentRequest = () => {
+    const {setSidebarIndex ,p_getBalance} = useContext(AppContext);
     const [paymentMethod, setPaymentMethod] = useState('Bank Transfer');
     const [amount,setAmount]=useState('');
     const [name, setName] = useState('');
@@ -13,6 +14,7 @@ export const PaymentRequest = () => {
     const [upiId, setUpiId] = useState('');
     const [document, setDocument] = useState([]);
     const [submitted, setSubmitted] = useState(false);
+    const [loading, setLoading]=useState(false);
 
     function isAlphabetWithSpace(str) {
         return /^[A-Za-z\s]+$/.test(str);
@@ -41,7 +43,7 @@ export const PaymentRequest = () => {
             return;
         }
         if (amount === '') {
-            alert('Fill mandatory data');
+            alert('Fill amount');
             return;
         }
 
@@ -77,10 +79,18 @@ export const PaymentRequest = () => {
             alert('Please upload a document');
             return;
         }
-       storePaymentRequest(paymentMethod, name,amount, bankName, accountNumber, ifscCode, upiId, document)
-        console.log('Payment details submitted:', {paymentMethod, name, bankName, accountNumber, ifscCode, upiId, document  });
-        setSubmitted(true);
-        clear();
+        setLoading(true)
+        const result=await storePaymentRequest(paymentMethod, name,amount, bankName, accountNumber, ifscCode, upiId, document)
+        console.log('Payment details submitted:', {paymentMethod, name, bankName, accountNumber, ifscCode, upiId, document });
+        console.log(result)
+        if(result==='submitted'){
+            setSubmitted(true);
+            setSidebarIndex(4)
+            p_getBalance();
+            clear();
+        }
+        setLoading(false)
+        
     }
 
     function clear() {
@@ -198,8 +208,21 @@ export const PaymentRequest = () => {
                     <div className='input-div-demo'>
                         <span className='input-label-demo'>Upload Document</span>
                         <div className='input-file-box-demo' style={{ border: 'none' }}>
+                            <label
+                                htmlFor="paymentDocument"
+                                style={{
+                                    backgroundColor: "#007bff",
+                                    color: "white",
+                                    padding: "2px 16px",
+                                    borderRadius: "8px",
+                                    cursor: "pointer",
+                                    
+                                }}
+                            >
+                                Select File
+                            </label>
                             <input
-                                style={{ height: '25px', marginBottom: '5px', }}
+                                style={{ height: '25px', marginBottom: '5px', display:'none'}}
                                 onChange={(e) => {
                                     console.log('in on change');
                                     const maxFileSize = 5 * 1024 * 1024;
@@ -213,7 +236,7 @@ export const PaymentRequest = () => {
                                     setDocument(e.target.files)
                                 }
                                 } type="file" id='paymentDocument' />
-                            <div style={{ display: 'flex' }}>
+                            <div style={{ display: 'flex',marginTop:'10px'  }}>
                                 {
                                     document.length == 0 ? <span>No file selected</span> :
                                         <div style={{ display: 'flex' }}>
@@ -223,7 +246,7 @@ export const PaymentRequest = () => {
                                             <img
                                                 onClick={() => {
                                                     setDocument([]);
-                                                    document.getElementById("paymentDocument").value = "";
+                                                    // document.getElementById("paymentDocument").value = "";
                                                 }}
                                                 style={{ height: '20px', marginRight: '15px', cursor: 'pointer' }}
                                                 src={CancleSvg} alt="Remove file" />
@@ -237,7 +260,7 @@ export const PaymentRequest = () => {
                         <div className='submit-button' onClick={
                             validate_payment_data
                             }>
-                            Submit Payment Details
+                            {loading?<div className='loader'></div>:<span>Submit Payment Details</span>}
                         </div>
                     </div>
                 </div>

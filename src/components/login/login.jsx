@@ -7,9 +7,9 @@ import hideIcon from '../assets/hide.svg'
 import unhideIcon from '../assets/unhide.svg'
 import unselectIcon from '../assets/unselect.svg'
 import selectIcon from '../assets/select.svg'
-import google from '../assets/google.png'
-import apple from '../assets/apple.png'
-import facebook from '../assets/Facebook.png'
+// import google from '../assets/google.png'
+// import apple from '../assets/apple.png'
+// import facebook from '../assets/Facebook.png'
 import { checkuser } from './authenticationLogic'
 export const Login = () => {
     const [loader,setLoader] = useState(false);
@@ -34,11 +34,11 @@ export const Login = () => {
 
                     <div className="inputs">
                         <div className='input'>
-                            <input style={{border:emailInputError?'2px solid red':''}} placeholder='Enter your email ID' className='input' type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+                            <input style={{border:emailInputError?'2px solid red':'',paddingLeft:'15px'}} placeholder='Enter your email ID' className='input' type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
                         </div>
                         <div className='input-link-div'><a className='input-link' href='/sendotp'>Login with OTP</a></div>
                         <div className="input" style={{position:'relative'}}>
-                            <input style={{ border:passwordInputError?'2px solid red':''}} placeholder='Password' className='input' type={show ? 'text' : 'password'} value={password} onChange={(e) => setPassword(e.target.value)} />
+                            <input style={{ border:passwordInputError?'2px solid red':'',paddingLeft:'15px'}} placeholder='Password' className='input' type={show ? 'text' : 'password'} value={password} onChange={(e) => setPassword(e.target.value)} />
                             <div style={{ width: '20px', position: 'absolute', top: '20px',right:'20px', display: 'flex', alignItems: 'center' }}>
                                 <img onClick={() => setShow(!show)} src={show ? unhideIcon : hideIcon} alt="" />
                             </div>

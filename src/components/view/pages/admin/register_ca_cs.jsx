@@ -1,9 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState ,useContext} from 'react';
 import '../agent_page.css'
 import CancleSvg from '../../../assets/cancle.svg'
 import { storeCaCsDetails } from '../../../homepage/homepage_logic'
+import { AppContext } from '../../../provider'
 
 export const RegisterCACS = () => {
+    const [loading, setLoading]=useState(false);
+    const {setSidebarIndex} = useContext(AppContext);
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
@@ -47,12 +50,14 @@ export const RegisterCACS = () => {
             alert('Please upload ID proof');
             return;
         }
-
+        setLoading(true);
         const workingDays = 'Monday-Friday'; // Constant working days
         const result = await storeCaCsDetails(name, specialization, role, email, phone, regNumber, workingDays, certificate[0], idProof[0]);
-        if (result) {
+        if (result==='success'){
+            setSidebarIndex(2);
             clear();
         }
+        setLoading(false);
     }
 
     function clear() {
@@ -96,7 +101,7 @@ export const RegisterCACS = () => {
                             <option value="CA">CA</option>
                             <option value="CS">CS</option>
                         </select>
-                    </div>
+                    </div> 
                     <div className='input-div-demo'>
                         <span className='input-label-demo'>Specialization</span>
                         <select className='input-box-demo' style={{ width: '410px' }} value={specialization} onChange={(e) => { setSpecialization(e.target.value) }}>
@@ -115,8 +120,20 @@ export const RegisterCACS = () => {
                     <div className='input-div-demo'>
                         <span className='input-label-demo'>Upload Certificate</span>
                         <div className='input-file-box-demo' style={{ border: 'none' }}>
+                            <label
+                                htmlFor="certificate"
+                                style={{
+                                    backgroundColor: "#007bff",
+                                    color: "white",
+                                    padding: "2px 16px",
+                                    borderRadius: "8px",
+                                    cursor: "pointer",
+                                }}
+                            >
+                                Select File
+                            </label>
                             <input
-                                style={{ height: '25px', marginBottom: '5px', }}
+                                style={{ height: '25px', marginBottom: '5px',display:'none' }}
                                 onChange={(e) => {
                                     console.log('in on change');
                                     const maxFileSize = 5 * 1024 * 1024;
@@ -132,7 +149,7 @@ export const RegisterCACS = () => {
 
 
                                 } type="file" id='certificate' />
-                            <div style={{ display: 'flex' }}>
+                            <div style={{ display: 'flex',marginTop:'10px' }}>
                                 {
                                     certificate.length == 0 ? <span>No file selected</span> :
                                         <p>{certificate[0].name}</p>
@@ -143,8 +160,20 @@ export const RegisterCACS = () => {
                     <div className='input-div-demo'>
                         <span className='input-label-demo'>Upload ID Proof</span>
                         <div className='input-file-box-demo' style={{ border: 'none' }}>
+                            <label
+                                htmlFor="idProof"
+                                style={{
+                                    backgroundColor: "#007bff",
+                                    color: "white",
+                                    padding: "2px 16px",
+                                    borderRadius: "8px",
+                                    cursor: "pointer",
+                                }}
+                            >
+                                Select File
+                            </label>
                             <input
-                                style={{ height: '25px', marginBottom: '5px', }}
+                                style={{ height: '25px', marginBottom: '5px',display:'none'}}
                                 onChange={(e) => {
                                     console.log('in on change');
                                     const maxFileSize = 5 * 1024 * 1024;
@@ -160,7 +189,7 @@ export const RegisterCACS = () => {
 
 
                                 } type="file" id='idProof' />
-                            <div style={{ display: 'flex' }}>
+                            <div style={{ display: 'flex' ,marginTop:'10px'}}>
                                 {
                                     idProof.length == 0 ? <span>No file selected</span> :
                                         <p>{idProof[0].name}</p>
@@ -170,7 +199,7 @@ export const RegisterCACS = () => {
                     </div>
                     <div className='input-div-demo'>
                         <div className='submit-button' onClick={validate_and_submit}>
-                            Submit
+                            {loading? <div className='loader'></div>:<span>Submit</span> }
                         </div>
                     </div>
                 </div>

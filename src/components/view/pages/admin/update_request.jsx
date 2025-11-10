@@ -13,8 +13,11 @@ export const UpdateRequest = ({ requestData }) => {
     const [description,setDescription]=useState('');
     const [showCompleteWorkPopup, setShowCompleteWorkPopup] = useState(false);
     const [documents, setDocumnets] = useState([]);
-    const { selectedCaCsId, setSelectedCaCsId } = useContext(AppContext);
+    const { selectedCaCsId } = useContext(AppContext);
     const { pageIndex, setPageIndex } = useContext(AppContext);
+    const [assignLoading, setAssignLoading] = useState(false);
+    const [completeLoading, setCompleteLoading] = useState(false);
+    const [verifyLoading, setVerifyLoading] = useState(false);
     // const documents = [['102', 'Form15.pdf'], ['102', 'Form18.jpg']];
     const activityLog = [['request assigned to Anil Mehta', '05 oct 25'], ['request accepted by Admin', '05 oct 25']]
 
@@ -36,30 +39,47 @@ export const UpdateRequest = ({ requestData }) => {
     const [loading, setLoading] = useState(true);
     useEffect(() => {
         fetchData();
+        window.scrollTo({ top: 0, behavior: "smooth" });
     }, []);
     if (loading) return <p>Loading...</p>;
     return <div>
         <div style={{ display: 'flex', alignItems: 'center', margin: '30px 50px 17px 42px', justifyContent: 'space-between' }}>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+            <div onClick={() => { setPageIndex(0) }} className='submit-button-variable' style={{ marginRight: '30px' }}>
+                    <span>🡐 back</span>
+                </div>
             <p className='title-demo' style={{ margin: '0' }}>Request Details</p>
+            </div>
             {
-                requestData[6] === 'Completed' ? <p>Completed</p> : 
+                requestData[6] === 'Completed' ? <p></p> : 
                  <div style={{ display: 'flex' }}>
                 <div
-                    onClick={() => {
+                    onClick={async() => {
+                        if(verifyLoading){
+                            return
+                        }
                         if (requestData[6] === 'Under Review') {
-                            updateRequestStatus(requestData[0], 'Approved', 'none');
-                            alert('changes saved');
-                            setPageIndex(2);
-                        } if (requestData[6] === 'Approved') {
+                            setVerifyLoading(true);
+                            const response =await updateRequestStatus(requestData[0], 'Approved', 'none');
+                            if(response==='success'){
+                                 alert('request verified');
+                                requestData[6] = 'Approved';
+                                fetchData();
+                            }else{
+                                alert(response);
+                            }
+                            setVerifyLoading(false);
+                        }else if (requestData[6] === 'Approved') {
                             setShowPopUp(true);
-                        } if (requestData[6] == 'Assigned') {
+                        }else if (requestData[6] == 'Assigned') {
                             setShowCompleteWorkPopup(true);
                         }
                     }}
-                    className='submit-button-variable' style={{ marginRight: '30px' }}>
-                    {requestData[6] === 'Under Review' ? 'Approve Request' : requestData[6] === 'Approved' ? 'Assign CA/CS' :  'Complete'}
+                    className='submit-button-variable' style={{ marginRight: '30px',width:'120px' }}>
+                    {requestData[6] === 'Under Review' ? verifyLoading?<div style={{width:'12px',height:'12px'}} className='loader'></div>:'Approve Request' : requestData[6] === 'Approved' ? 'Assign CA/CS' :  'Complete'}
                 </div>
-                <div className='submit-button-variable'>Close Request</div>
+                {requestData[6] === 'Under Review'?<div className='submit-button-variable'>Close Request</div>:<></>}
+                
             </div>
             }
            
@@ -99,10 +119,7 @@ export const UpdateRequest = ({ requestData }) => {
                         <p style={{ fontSize: '16px', fontWeight: '400', marginTop: '5px' }}>{requestData[3]}</p>
                         <p style={{ fontSize: '16px', fontWeight: '400', marginTop: '5px' }}> <span>+91</span> {requestData[4]}</p>
                     </div>
-                    <div style={{ padding: '20px 0 10px 20px' }}>
-                        <p style={{ fontSize: '15px', paddingBottom: '10px' }}>PAN/GST Number</p>
-                        <p style={{ fontSize: '20px', fontWeight: '600' }}>PNTS0134F</p>
-                    </div>
+                   
                 </div>
             </div>
             <div style={{ width: '60%', display: 'flex', flexDirection: 'column', marginLeft: '20px', alignSelf: 'flex-start' }}>
@@ -137,17 +154,29 @@ export const UpdateRequest = ({ requestData }) => {
                 <div className='content-div-demo' style={{ width: '100%', paddingBottom: '20px', marginTop: '20px' }}>
                     <div style={{ borderBottom: '1px solid black', padding: '10px 20px' }}>
                         <p style={{ fontSize: '22px', fontWeight: '600' }}>Activity Log</p>
+                    </div> 
+                    <div style={{ padding: '20px 30px 10px 20px', display: 'flex', justifyContent: 'space-between' }}>
+                        <p style={{ fontSize: '18px', fontWeight: '500' }}>request created by {requestData[16]}</p>
+                        <p style={{ fontSize: '15px', fontWeight: '400' }}>{dateFormat(requestData[8])}</p>
                     </div>
-                    {activityLog.map((item, index) => (
-                        <div>
-                            <div style={{ padding: '20px 30px 10px 20px', display: 'flex', justifyContent: 'space-between' }}>
-                                <p style={{ fontSize: '18px', fontWeight: '500' }}>{item[0]}</p>
-                                <p style={{ fontSize: '15px', fontWeight: '400' }}>{item[1]}</p>
 
-                            </div>
-                            {documents.length != index + 1 ? <hr style={{ margin: '0 30px', }} /> : ''}
-                        </div>
-                    ))}
+                    {requestData[6] === 'Approved' || requestData[6] === 'Assigned' || requestData[6] === 'Completed' ? <div style={{ padding: '20px 30px 10px 20px', display: 'flex', justifyContent: 'space-between' }}>
+                        <p style={{ fontSize: '18px', fontWeight: '500' }}>request verified by admin</p>
+                        <p style={{ fontSize: '15px', fontWeight: '400' }}>{dateFormat(requestData[14])}</p>
+                    </div> : <div></div>
+                    }
+                    {requestData[6] === 'Assigned' || requestData[6] === 'Completed' ? <div style={{ padding: '20px 30px 10px 20px', display: 'flex', justifyContent: 'space-between' }}>
+                        <p style={{ fontSize: '18px', fontWeight: '500' }}>request assigned to CA/CS</p>
+                        <p style={{ fontSize: '15px', fontWeight: '400' }}>{dateFormat(requestData[15])}</p>
+                    </div> : <div></div>
+                    }
+                    {requestData[6] === 'Completed' ? <div style={{ padding: '20px 30px 10px 20px', display: 'flex', justifyContent: 'space-between' }}>
+                        <p style={{ fontSize: '18px', fontWeight: '500' }}>request completed by CA/CS</p>
+                        <p style={{ fontSize: '15px', fontWeight: '400' }}>{dateFormat(requestData[12])}</p>
+                    </div> : <div></div>
+                    }
+
+                    <div style={{ height: '10px' }}></div>
                 </div>
             </div>
         </div>
@@ -175,8 +204,13 @@ export const UpdateRequest = ({ requestData }) => {
                     } className="button">Cancel</div>
                     <div onClick={
                         async () => {
+                            if(assignLoading){
+                                return
+                            }
+                            setAssignLoading(true);
                             if (selectedCaCsId === 0) {
                                 alert('Select CA/CS')
+                                setAssignLoading(false);
                                 return
                             }
                             const response = await assignCaCs(selectedCaCsId, requestData[0]);
@@ -189,9 +223,12 @@ export const UpdateRequest = ({ requestData }) => {
 
                             fetchData();
                             setShowPopUp(false);
+                            setAssignLoading(false);
                         }
                     }
-                        className="button">Assign</div>
+                        className="button">
+                            {assignLoading ? <div style={{width:'12px',height:'12px'}} className='loader'></div>:<span>Assign</span>}
+                            </div>
                 </div>
 
             </div>
@@ -219,9 +256,23 @@ export const UpdateRequest = ({ requestData }) => {
                     </div>
                     <div style={{display:'flex', flexDirection:'column',justifyContent:'center',margin:'40px 20px'}}>
                         <span className='input-label-demo'>Upload Documents</span>
-                        <div  style={{ border: 'none' }}>
+                        <div  style={{ border: 'none' ,marginTop:'10px'}}>
+                            <label
+                                htmlFor="MyFiles"
+                                style={{
+                                    backgroundColor: "#007bff",
+                                    color: "white",
+                                    padding: "2px 16px",
+                                    borderRadius: "8px",
+                                    cursor: "pointer",
+                                    
+                                    
+                                }}
+                            >
+                                Select File
+                            </label>
                             <input
-                                style={{ height: '25px', marginBottom: '5px', }}
+                                style={{ height: '25px', marginBottom: '5px',display:'none'}}
                                 onChange={(e) => {
                                     console.log('in on change');
                                     const maxFileLimit = 4
@@ -260,7 +311,7 @@ export const UpdateRequest = ({ requestData }) => {
                                     // setMyFiles(e.target.files)
 
                                 }} type="file" id='MyFiles' multiple />
-                            <div style={{ display: 'flex' }}>
+                            <div style={{ display: 'flex' ,marginTop:'10px'}}>
                                 {
                                     files.length == 0 ? <span>No file selected</span> :
                                         files.map((item, index) => (
@@ -292,9 +343,11 @@ export const UpdateRequest = ({ requestData }) => {
                     } className="button">Cancel</div>
                     <div onClick={
                         async () => {
-                            if (selectedCaCsId === 0) {
-                               
+                            if(completeLoading){
+                                return
                             }
+                            setCompleteLoading(true)
+    
                             const response = await completeWork(requestData[0],description,files);
                             if (response === 'submitted') {
                                 requestData[6] = 'Completed';
@@ -304,9 +357,10 @@ export const UpdateRequest = ({ requestData }) => {
                             }
                             fetchData();
                             setShowCompleteWorkPopup(false);
+                            setCompleteLoading(false)
                         }
                     }
-                        className="button">Submit</div>
+                        className="button">{completeLoading?<div style={{width:'12px',height:'12px'}} className='loader'></div>:<div>Submit</div>} </div>
                 </div>
 
             </div>

@@ -1,10 +1,10 @@
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import '../agent_page.css'
-import {getTransactionData } from '../../../controller/agent_data_controller';
-
+import { getTransactionData } from '../../../controller/agent_data_controller';
 
 
 export const TransactionHistory = () => {
+    const [loading, setLoading] = useState([true]);
     const [transactionList, setTransactionList] = useState([]);
 
     const fetchData = async () => {
@@ -14,7 +14,9 @@ export const TransactionHistory = () => {
             console.log('result:', result)
         } catch (err) {
             console.error("Error fetching:", err);
-        } 
+        } finally {
+            setLoading(false);
+        }
     };
 
     useEffect(() => {
@@ -49,50 +51,58 @@ export const TransactionHistory = () => {
         }
     };
 
-
-    return (
-        <div>
-            <p className='title-demo'>Payment Details</p>
-            <div style={{ width: '100%', minHeight: '80%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-                <div className='content-div-demo' style={{ marginTop: '20px', paddingBottom: '20px' }}>
-                    <div style={{ display: 'flex', justifyItems: 'space-around' }}>
-                        <div className='request-table-item' style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title="Transaction ID">Transaction ID</div>
-                        <div className='request-table-item' style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title="Purpose">Purpose</div>
-                        <div className='request-table-item' style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title="Amount">Amount</div>
-                        <div className='request-table-item' style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title="Transaction Type">Type</div>
-                        <div className='request-table-item' style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title="Payment/Request ID">Payment/Request ID</div>
-                        <div className='request-table-item' style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title="Date">Date</div>
-                    </div>
-                    <hr style={{ margin: '10px 20px' }} />
-                    {transactionList.map((payment, index) => (
-                        <div key={payment[0]}>
+    if (loading) {
+        return <span>Loading...</span>
+    } else {
+        return (
+            <div style={{ backgroundColor: 'rgba(246, 246, 249, 1)' }}>
+                <p className='title-demo'>Payment Transaction</p>
+                {transactionList.length === 0 ? <span style={{ margin: '20px 50px' }}>No data found</span> :
+                    <div style={{ width: '100%', minHeight: '80%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+                        <div className='content-div-demo' style={{ marginTop: '20px', paddingBottom: '20px' }}>
                             <div style={{ display: 'flex', justifyItems: 'space-around' }}>
-                                <div className='request-table-item' style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={payment[0]}>{payment[0]}</div>
-                                <div className='request-table-item' style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={payment[4]}>{payment[4]}</div>
-                                <div className='request-table-item' style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={formatAmount(payment[1])}>{formatAmount(payment[1])}</div>
-                                <div className='request-table-item' style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                                    <span
-                                        style={{
-                                            padding: '4px 8px',
-                                            borderRadius: '4px',
-                                            fontSize: '12px',
-                                            ...getStatusColor(payment[2])
-                                        }}
-                                        title={payment[2]}
-                                    >
-                                        {payment[2]}
-                                    </span>
-                                </div>
-                                <div className='request-table-item' style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={payment[5]}>{payment[5]}</div>
-                                <div className='request-table-item' style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={formatDate(payment[6])}>{formatDate(payment[6])}</div>
-
+                                <div className='request-table-item' style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title="Transaction ID">Transaction ID</div>
+                                <div className='request-table-item' style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title="Purpose">Purpose</div>
+                                <div className='request-table-item' style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title="Amount">Amount</div>
+                                <div className='request-table-item' style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title="Transaction Type">Type</div>
+                                <div className='request-table-item' style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title="Payment/Request ID">Payment/Request ID</div>
+                                <div className='request-table-item' style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title="Date">Date</div>
                             </div>
-                            {transactionList.length !== index + 1 ? <hr style={{ margin: '10px 20px' }} /> : ''}
+                            <hr style={{ margin: '10px 20px' }} />
+                            {transactionList.map((payment, index) => (
+                                <div key={payment[0]}>
+                                    <div style={{ display: 'flex', justifyItems: 'space-around' }}>
+                                        <div className='request-table-item' style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={payment[0]}>{payment[0]}</div>
+                                        <div className='request-table-item' style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={payment[4]}>{payment[4]}</div>
+                                        <div className='request-table-item' style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={formatAmount(payment[1])}>{formatAmount(payment[1])}</div>
+                                        <div className='request-table-item' style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                                            <span
+                                                style={{
+                                                    padding: '4px 8px',
+                                                    borderRadius: '4px',
+                                                    fontSize: '12px',
+                                                    ...getStatusColor(payment[2])
+                                                }}
+                                                title={payment[2]}
+                                            >
+                                                {payment[2]}
+                                            </span>
+                                        </div>
+                                        <div className='request-table-item' style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={payment[5]}>{payment[5]}</div>
+                                        <div className='request-table-item' style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={formatDate(payment[6])}>{formatDate(payment[6])}</div>
+
+                                    </div>
+                                    
+                                    {transactionList.length !== index + 1 ? <hr style={{ margin: '10px 20px' }} /> : ''}
+                                </div>
+                            ))}
+                             
                         </div>
-                    ))}
-                </div>
+                         <div style={{height:'100px'}}></div>
+                    </div>
+                }
             </div>
-        </div>
-    )
+        )
+    }
 }
 

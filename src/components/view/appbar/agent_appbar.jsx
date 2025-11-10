@@ -4,12 +4,11 @@ import Logo from '../../assets/new_logo.svg'
 import Search from '../../assets/search.svg'
 import Notification from '../../assets/Notification.svg'
 import Profile from '../../assets/profile.svg'
-import { getBalance } from '../../controller/agent_data_controller'
+import { AppContext } from '../../provider'
 export const AgentAppbar=()=>{
-    const [balance,setBalance]=useState(0)
+    const {p_balance,p_getBalance} = useContext(AppContext);
     useEffect(()=>{
-        const result=getBalance();
-        setBalance(result)
+        p_getBalance(); 
     },[]);
     return <div className='appbar-div'>
         <div style={{display:'flex', alignItems:'center',marginLeft:'36px',marginTop:'10px',marginBottom:'15px'}}>
@@ -23,7 +22,7 @@ export const AgentAppbar=()=>{
             <span className='search-text'>Search agents, CAs, customers, or services...</span>
         </div>
         <div style={{display:'flex', alignItems:'center'}}>
-        <span style={{fontFamily:'Roboto',fontSize:'20',fontWeight:'bolder', marginLeft:'10px',marginRight:'20px'}}>Balance: {balance}</span>
+        <span style={{fontFamily:'Roboto',fontSize:'20',fontWeight:'bolder', marginLeft:'10px',marginRight:'20px'}}>Balance: {p_balance}</span>
         <img style={{marginLeft:'20px'}} src={Profile} alt="" />
         <span style={{fontFamily:'Roboto',fontSize:'20',fontWeight:'bolder', marginLeft:'10px',marginRight:'20px'}}>Agent</span>
         </div>

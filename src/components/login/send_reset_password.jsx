@@ -31,7 +31,7 @@ export const SendResetPasswordEmail = () => {
 
                     <div className="inputs">
                         <div className='input'>
-                            <input placeholder='Enter your email ID' className='input' type="email" onChange={(e) => { setEmail(e.target.value) }} />
+                            <input style={{paddingLeft:'15px'}} placeholder='Enter your email ID' className='input' type="email" onChange={(e) => { setEmail(e.target.value) }} />
                         </div>
                         
                         {emailStatus? <div style={{position:'relative', width:'460px', display:'flex', alignItems:'center',marginBottom:'10px'}}> <img src={successImg} style={{height:'20px',marginRight:'5px'}} alt="" /> <span>Password reset link sent to your Email Id </span>

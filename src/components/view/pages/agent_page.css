@@ -1,9 +1,11 @@
 .title-demo{
-    font-size: 40px;
-    font-weight: 300;
+    font-size: 34px;
+    font-weight: 500;
     font-family: 'Roboto';
     margin: 35px 0 17px 42px;
 }
+
+
 
 *{
     font-family: 'Roboto';
@@ -58,11 +60,21 @@
 .input-file-box-demo{
     position:absolute;
     margin-left: 400px;
-    margin-bottom: 20px;
+    margin-bottom: 0px;
     font-size: 16px;
     padding-left: 10px;
     height: 54px;
     border: 1px solid rgba(190, 190, 190, 1);
+}
+
+.loader {
+  border: 3px solid #f3f3f3;       /* Light gray */
+  border-top: 3px solid rgb(75, 27, 219);     /* White spinner */
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  animation: spin 1s linear infinite;
+  display: inline-block;
 }
 
 .submit-button{

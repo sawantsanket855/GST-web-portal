@@ -31,7 +31,7 @@ export const SendOtp = () => {
 
                     <div className="inputs">
                         <div className='input'>
-                            <input placeholder='Enter your email ID' className='input' type="email" onChange={(e) => { setEmail(e.target.value) }} />
+                            <input style={{paddingLeft:'15px'}} placeholder='Enter your email ID' className='input' type="email" onChange={(e) => { setEmail(e.target.value) }} />
                         </div>
                         <div onClick={()=>{setPolicy(!policy)}} style={{ display: 'flex' ,alignItems:'center'}}>
                             {policy?<img height={28} src= {select} alt="" />:<div style={{ height: '28px', width: '28px', backgroundColor: 'rgba(245, 249, 254, 1)', borderRadius: '8px' }}></div>} 
@@ -40,7 +40,7 @@ export const SendOtp = () => {
                         <div className='input signin' onClick={ async() => {
                             setLoader(true)
                             if (!policy){
-                                alert('please accept terms of condition')
+                                alert('please accept terms and condition')
                                 setLoader(false)
                                 return
                             }
@@ -48,6 +48,7 @@ export const SendOtp = () => {
                                 console.log('valid email')
                                 const response=await send_otp(email.trim());
                                 if(response=='otp sent'){
+                                    // alert('otp sent')
                                     navigator(`/submitotp/${email}`);
                                     setLoader(false)
                                 }else{

@@ -1,5 +1,5 @@
-// let server_address = 'http://127.0.0.1:8000/';
-let server_address='https://etymo-5cpb.onrender.com/';
+let server_address = 'http://127.0.0.1:8000/';
+// let server_address='https://etymo-5cpb.onrender.com/';
 
 export async function storeRequest(type, name, email, mobile, description, documents) {
     console.log('in storeRequest')
@@ -271,6 +271,7 @@ export async function storePaymentRequest(paymentMethod, name, amount, bankName,
     } catch (error) {
         console.log('error')
         alert("can't reach server")
+        return('error')
     }
 }
 
@@ -289,11 +290,16 @@ export async function getPaymentRequestData() {
             }
         );
         const data = await response.json()
-        console.log(data)
-        console.log(data.result)
-        return data.result
+        if(data.message==="success"){
+            return data.result
+        }else{
+            alert(data.message)
+            return [];
+        }
+        
     } catch (error) {
         console.log(error)
+        return [];
     }
 }
 
@@ -427,11 +433,17 @@ export async function getTransactionData() {
             }
         );
         const data = await response.json()
-        console.log(data)
-        console.log(data.result)
-        return data.result
+        if(data.message==='success'){
+            return data.result
+        }else{
+            alert(data.message);
+            return [];
+        }
+        
     } catch (error) {
         console.log(error)
+        alert('server not responding')
+        return [];
     }
 }
 

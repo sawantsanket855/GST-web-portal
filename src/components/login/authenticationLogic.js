@@ -1,6 +1,6 @@
 
-let server_address='https://etymo-5cpb.onrender.com';
-// let server_address='http://127.0.0.1:8000';
+// let server_address='https://etymo-5cpb.onrender.com';
+let server_address='http://127.0.0.1:8000';
 
 
 export async function checkuser(email, password ,loginType) {
@@ -20,8 +20,9 @@ export async function checkuser(email, password ,loginType) {
     if (response.status === 200) {
       if (data.message === 'correct credentials') {
         localStorage.setItem("loged email", email)
-        localStorage.setItem("token", data.token)}
+        localStorage.setItem("token", data.token)
         localStorage.setItem("loginType",loginType)
+      }
       return data.message;
     }
     return 'error'
@@ -75,6 +76,14 @@ export async function submitOTP(email, otp) {
       }
     );
     const data = await response.json();
+    if (data.message==="correct otp"){
+      localStorage.setItem("loged email", email)
+      localStorage.setItem("token", data.token)
+      localStorage.setItem("loginType", data.login_type)
+      console.log('data:')
+      console.log(data)
+      console.log(localStorage.getItem('loginType'))
+    }
     return data.message
   } catch (error) {
     return 'server not responding'

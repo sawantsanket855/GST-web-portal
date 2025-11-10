@@ -5,10 +5,10 @@ import { AppContext } from '../../../provider.jsx'
 import { getRequestData } from '../../../controller/agent_data_controller';
 import { UpdateRequest } from './update_request.jsx';
 export const AllRequestsAdmin = () => {
-    const [pendingRequestCount , setPendingRequestCount]=useState(0); 
-    const [assignedRequestCount , setAssignedRequestCount]=useState(0);
-    const [completedRequestCount , setCompletedRequestCount]=useState(0);
-    const {pageIndex, setPageIndex } = useContext(AppContext);
+    const [pendingRequestCount, setPendingRequestCount] = useState(0);
+    const [assignedRequestCount, setAssignedRequestCount] = useState(0);
+    const [completedRequestCount, setCompletedRequestCount] = useState(0);
+    const { pageIndex, setPageIndex } = useContext(AppContext);
     const [currentItemData, setCurrentItemData] = useState([]);
     const [requestList, setRequestList] = useState([]);
     const [filteredRequestList, setFilteredRequestList] = useState([]);
@@ -50,7 +50,7 @@ export const AllRequestsAdmin = () => {
         } finally {
             setLoading(false);
         }
-        
+
     };
 
     useEffect(() => {
@@ -60,17 +60,17 @@ export const AllRequestsAdmin = () => {
     useEffect(() => {
         const filtered = filterRequests(requestList, filter);
         setFilteredRequestList(filtered);
-      
+
     }, [filter, requestList]);
 
     if (loading) return <p>Loading...</p>;
-    if (pageIndex==1) return <UpdateRequest requestData={currentItemData}/>;
-    if(pageIndex==2){
+    if (pageIndex == 1) return <UpdateRequest requestData={currentItemData} />;
+    if (pageIndex == 2) {
         fetchData();
         setPageIndex(0);
     }
-    
-    return <div>
+
+    return <div style={{ backgroundColor: 'rgba(246, 246, 249, 1)' }}>
         <p className='title-demo'>All Requests</p>
         <div style={{ width: '100%', minHeight: '80%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center  ' }}>
             <div className='content-div-demo'>
@@ -89,7 +89,7 @@ export const AllRequestsAdmin = () => {
                     </div>
                 </div>
             </div>
-            <div className='content-div-demo' style={{ marginTop: '20px', paddingBottom: '20px' }}>
+            <div className='content-div-demo' style={{ marginTop: '20px', paddingBottom: '20px' ,marginBottom:'80px'}}>
                 <div style={{ display: 'flex', padding: '30px 20px' }}>
                     <span style={{ fontSize: '20px', fontWeight: '500', marginRight: '10px' }}>Status</span>
                     <select name="status" id="status" style={{ border: '1px solid grey', borderRadius: '5px', textAlign: 'center' }} onChange={(e) => { setFilter(e.target.value) }}>
@@ -103,7 +103,7 @@ export const AllRequestsAdmin = () => {
                 <div style={{ display: 'flex', justifyItems: 'space-around' }}>
                     <div className='request-table-item'>Request ID</div>
                     <div className='request-table-item'>Date</div>
-                    <div className='request-table-item'>Customer</div>
+                    <div className='request-table-item'>Agent</div>
                     <div className='request-table-item'>Product/Service</div>
                     <div className='request-table-item'>Status</div>
                     <div className='request-table-item'>Action</div>
@@ -114,11 +114,11 @@ export const AllRequestsAdmin = () => {
                         <div style={{ display: 'flex', justifyItems: 'space-around' }}>
                             <div className='request-table-item'>{item[0]}</div>
                             <div className='request-table-item'>{dateFormat(item[8])}</div>
-                            <div className='request-table-item'>{item[1]}</div>
+                            <div className='request-table-item'>{item[16]}</div>
                             <div className='request-table-item'>{item[2]}</div>
                             <div className='request-table-item'>{item[6]}</div>
                             <div onClick={
-                                () => {showRequestDetails(item)}
+                                () => { showRequestDetails(item) }
                             }
                                 className='request-table-item' style={{ color: 'blue' }}>View Details</div>
                         </div>

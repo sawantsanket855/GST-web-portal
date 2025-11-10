@@ -81,7 +81,15 @@ export const CaCsDetails = ({ currentItem, onBack, onUpdate }) => {
 
     return (
         <div>
-            <p className='title-demo'>CA/CS Details</p>
+            <div style={{ display: 'flex', alignItems: 'center', margin: '30px 50px 17px 42px', justifyContent: 'space-between' }}>
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                <div onClick={() => { setPageIndex(0) }} className='submit-button-variable' style={{ marginRight: '30px'}}>
+                    <span>🡐 back</span>
+                </div>
+                 <p className='title-demo' style={{margin:'0'}}>CA/CS Details</p>
+                </div>
+            </div>
+            
             <div style={{ width: '100%', minHeight: '80%', display: 'flex', justifyContent: 'center' }}>
                 <div className='content-div-demo' style={{ padding: '20px' }}>
                     <div style={{ borderBottom: '1px solid black', padding: '10px 20px', marginBottom: '20px' }}>
@@ -269,9 +277,9 @@ export const CaCsDetails = ({ currentItem, onBack, onUpdate }) => {
                                 {/* <div className='submit-button' onClick={handleEdit} style={{ fontSize: '14px', padding: '8px 16px' }}>
                                     Edit
                                 </div> */}
-                                <div className='submit-button' onClick={handleBack} style={{ fontSize: '14px', padding: '8px 16px' }}>
+                                {/* <div className='submit-button' onClick={handleBack} style={{ fontSize: '14px', padding: '8px 16px' }}>
                                     Back
-                                </div>
+                                </div> */}
                             </>
                         ) : (
                             <>

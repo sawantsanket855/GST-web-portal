@@ -5,10 +5,10 @@ import { AppContext } from '../../../provider.jsx'
 import { getRequestData } from '../../../controller/agent_data_controller';
 import { RequestDetails } from './request_details.jsx';
 export const AllRequests = () => {
-    const [pendingRequestCount , setPendingRequestCount]=useState(0);
-    const [assignedRequestCount , setAssignedRequestCount]=useState(0);
-    const [completedRequestCount , setCompletedRequestCount]=useState(0);
-    const {pageIndex, setPageIndex } = useContext(AppContext);
+    const [pendingRequestCount, setPendingRequestCount] = useState(0);
+    const [assignedRequestCount, setAssignedRequestCount] = useState(0);
+    const [completedRequestCount, setCompletedRequestCount] = useState(0);
+    const { pageIndex, setPageIndex } = useContext(AppContext);
     const [currentItemData, setCurrentItemData] = useState([]);
     const [requestList, setRequestList] = useState([]);
     const [filteredRequestList, setFilteredRequestList] = useState([]);
@@ -37,7 +37,7 @@ export const AllRequests = () => {
             setRequestList(result);
             setFilteredRequestList(result);
             console.log('result:', result)
-             const pendingCount = result.filter(item => item[6] === 'Under Review').length;
+            const pendingCount = result.filter(item => item[6] === 'Under Review').length;
             const assignedCount = result.filter(item => item[6] === 'Assigned').length;
             const completedCount = result.filter(item => item[6] === 'Completed').length;
             setPendingRequestCount(pendingCount);
@@ -60,8 +60,8 @@ export const AllRequests = () => {
     }, [filter, requestList]);
 
     if (loading) return <p>Loading...</p>;
-    if (pageIndex==1) return <RequestDetails requestData={currentItemData}/>;
-    return <div>
+    if (pageIndex == 1) return <RequestDetails requestData={currentItemData} />;
+    return <div style={{ backgroundColor: 'rgba(246, 246, 249, 1)' }}>
         <p className='title-demo'>All Requests</p>
         <div style={{ width: '100%', minHeight: '80%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center  ' }}>
             <div className='content-div-demo'>
@@ -80,6 +80,7 @@ export const AllRequests = () => {
                     </div>
                 </div>
             </div>
+            {filteredRequestList.length == 0 ? <></> :
             <div className='content-div-demo' style={{ marginTop: '20px', paddingBottom: '20px' }}>
                 <div style={{ display: 'flex', padding: '30px 20px' }}>
                     <span style={{ fontSize: '20px', fontWeight: '500', marginRight: '10px' }}>Status</span>
@@ -109,7 +110,7 @@ export const AllRequests = () => {
                             <div className='request-table-item'>{item[2]}</div>
                             <div className='request-table-item'>{item[6]}</div>
                             <div onClick={
-                                () => {showRequestDetails(item)}
+                                () => { showRequestDetails(item) }
                             }
                                 className='request-table-item' style={{ color: 'blue' }}>View Details</div>
                         </div>
@@ -117,6 +118,9 @@ export const AllRequests = () => {
                     </div>
                 ))}
             </div>
+            }
+                    <div style={{height:'100px'}}></div>
+
         </div>
     </div>
 

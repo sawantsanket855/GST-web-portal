@@ -6,6 +6,7 @@ import {getTransactionData } from '../../../controller/agent_data_controller';
 
 export const TransactionHistoryAdmin = () => {
     const [transactionList, setTransactionList] = useState([]);
+    const [loading,setLoading]=useState([true]);
 
     const fetchData = async () => {
         try {
@@ -14,7 +15,9 @@ export const TransactionHistoryAdmin = () => {
             console.log('result:', result)
         } catch (err) {
             console.error("Error fetching:", err);
-        } 
+        } finally{
+            setLoading(false);
+        }
     };
 
     useEffect(() => {
@@ -49,10 +52,13 @@ export const TransactionHistoryAdmin = () => {
         }
     };
 
-
+    if(loading){
+        return <span>Loading...</span>
+    }else{
     return (
-        <div>
-            <p className='title-demo'>Payment Details</p>
+        <div style={{ backgroundColor: 'rgba(246, 246, 249, 1)' }}>
+            <p className='title-demo'>Payment Transaction</p>
+            {transactionList.length===0? <span style={{margin:'20px 50px'}}>No data found</span>:
             <div style={{ width: '100%', minHeight: '80%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
                 <div className='content-div-demo' style={{ marginTop: '20px', paddingBottom: '20px' }}>
                     <div style={{ display: 'flex', justifyItems: 'space-around' }}>
@@ -82,7 +88,7 @@ export const TransactionHistoryAdmin = () => {
                                         }}
                                         title={payment[2]==='credit'?'debit':'credit'}
                                     >
-                                        {payment[2]}
+                                        {payment[2]==='credit'?'debit':'credit'}
                                     </span>
                                 </div>
                                 <div className='request-table-item' style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={payment[5]}>{payment[5]}</div>
@@ -94,7 +100,10 @@ export const TransactionHistoryAdmin = () => {
                     ))}
                 </div>
             </div>
+             }
+             <div style={{height:'100px'}}></div>
         </div>
     )
+}
 }
 

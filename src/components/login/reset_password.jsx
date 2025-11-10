@@ -10,7 +10,9 @@ import successImg from '../assets/success.svg'
 export const ResetPassword = () => {
     
     const [resetSuccess, setResetSuccess] = useState(false)
-    const { email, token } = useParams();
+    // const { email, token } = useParams();
+    const email='sawantsanket855@gmail.com'
+    const token ='UulhXBMM-pXyA9v3XpF4tBZUxKSF9eRttXcWkhqzWIQ'
     const navigate = useNavigate()
     const [loader, setLoader] = useState(false);
     const [inputError, setInputError] = useState([false, false])

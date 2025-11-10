@@ -7,9 +7,6 @@ import unselectIcon from '../assets/unselect.svg'
 import selectIcon from '../assets/select.svg'
 import hideIcon from '../assets/Hide Icon.png'
 import unHideIcon from '../assets/unhide.svg'
-import google from '../assets/google.png'
-import apple from '../assets/apple.png'
-import facebook from '../assets/Facebook.png'
 import { registerUser } from './authenticationLogic'
 export const Registration = () => {
     const navigate = useNavigate()

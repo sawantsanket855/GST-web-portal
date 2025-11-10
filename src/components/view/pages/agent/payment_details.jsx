@@ -2,6 +2,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import '../agent_page.css'
 import { AppContext } from '../../../provider.jsx'
 import { getPaymentRequestDocument } from '../../../homepage/homepage_logic.js';
+import { showPaymentRequestDocument } from '../../../controller/agent_data_controller.js';
 
 export const PaymentDetails = ({ currentItem, onBack }) => {
     const { setPageIndex } = useContext(AppContext);
@@ -48,13 +49,7 @@ export const PaymentDetails = ({ currentItem, onBack }) => {
             currency: 'INR'
         }).format(amount);
     };
-    const handleBack = () => {
-        if (onBack) {
-            onBack();
-        } else {
-            setPageIndex(0);
-        }
-    }
+ 
 
     if (!currentItem) {
         return <div>No payment data available</div>;
@@ -62,7 +57,17 @@ export const PaymentDetails = ({ currentItem, onBack }) => {
     if (loading) return <p>Loading...</p>;
     return (
         <div>
-            <p className='title-demo'>Payment Details</p>
+            <div style={{ display: 'flex', alignItems: 'center', margin: '30px 50px 17px 42px', justifyContent: 'space-between' }}>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+                <div onClick={() => { setPageIndex(0) }} className='submit-button-variable' style={{ marginRight: '30px' }}>
+                    <span>🡐 back</span>
+                </div>
+                <p className='title-demo' style={{ margin: '0' }}>Payment Details</p>
+            </div>
+            {/* {requestData[6] === "Under Review" ? <div className='submit-button-variable' style={{ marginRight: '30px' }}>Cancel Request</div> : <></>} */}
+
+        </div>
+            
             <div style={{ width: '100%', minHeight: '80%', display: 'flex', justifyContent: 'center' }}>
                 <div className='content-div-demo' style={{ padding: '20px' }}>
                     <div style={{ borderBottom: '1px solid black', padding: '10px 20px', marginBottom: '20px' }}>
@@ -147,12 +152,16 @@ export const PaymentDetails = ({ currentItem, onBack }) => {
                     }
     
 
-                    {/* Row 4: Certificate */}
+                    {/* Row 4: Document */}
                     <div style={{ padding: '20px 0 10px 20px' }}>
-                        <p style={{ fontSize: '15px', paddingBottom: '10px' }}>Certificate</p>
+                        <p style={{ fontSize: '15px', paddingBottom: '10px' }}>document</p>
                         <p style={{ fontSize: '17px', fontWeight: '600' }}>{documents[0][1]}</p>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                            <div className='view-button' style={{ color: 'blue', cursor: 'pointer', fontSize: '16px', marginTop: '10px' }}>view</div>
+                            <div 
+                            onClick={()=>{
+                                showPaymentRequestDocument(documents[0][0])
+                            }}
+                            className='view-button' style={{ color: 'blue', cursor: 'pointer', fontSize: '16px', marginTop: '10px' }}>view</div>
                         </div>
                     </div>
 

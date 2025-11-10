@@ -1,8 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState,useContext } from 'react';
 import '../agent_page.css'
+import { AppContext } from '../../../provider'
 import CancleSvg from '../../../assets/cancle.svg'
 import { storeRequest } from '../../../controller/agent_data_controller';
 export const SubmitRequest = () => {
+    const [loading, setLoading]=useState(false);
+    const {setSidebarIndex ,p_getBalance} = useContext(AppContext);
     const [files, setMyFiles] = useState([]);
     const [type, setType] = useState('Accounting and Audit');
     const [name, setName] = useState('');
@@ -32,10 +35,18 @@ export const SubmitRequest = () => {
             alert('Enter 10 digit mobile number');
             return
         }
+        if(files.length===0){
+            alert('Upload minimun 1 document');
+            return
+        }
+        setLoading(true);
         const result = await storeRequest(type, name, email, mobile, description, files)
         if (result === 'submitted') {
             clear();
+            setSidebarIndex(2)
+            p_getBalance();
         }
+        setLoading(false);
     }
     function clear() {
         setType('Accounting and Audit')
@@ -83,11 +94,23 @@ export const SubmitRequest = () => {
                         <span className='input-label-demo' >Description</span>
                         <textarea className='input-box-demo' name="description" id="description" value={description} onChange={(e) => { setDescription(e.target.value) }}></textarea>
                     </div>
-                    <div className='input-div-demo'>
+                    <div className='input-div-demo' style={{height:'50px'}}>
                         <span className='input-label-demo'>Upload Documents</span>
-                        <div className='input-file-box-demo' style={{ border: 'none' }}>
+                        <div className='input-file-box-demo' style={{ border: 'none'}}>
+                            <label
+                                htmlFor="MyFiles"
+                                style={{
+                                    backgroundColor: "#007bff",
+                                    color: "white",
+                                    padding: "2px 16px",
+                                    borderRadius: "8px",
+                                    cursor: "pointer",
+                                }}
+                            >
+                                Select File
+                            </label>
                             <input
-                                style={{ height: '25px', marginBottom: '5px', }}
+                                style={{ height: '25px', marginBottom: '5px',display:'none' }}
                                 onChange={(e) => {
                                     console.log('in on change');
                                     const maxFileLimit = 4
@@ -126,7 +149,7 @@ export const SubmitRequest = () => {
                                     // setMyFiles(e.target.files)
 
                                 }} type="file" id='MyFiles' multiple />
-                            <div style={{ display: 'flex' }}>
+                            <div style={{ display: 'flex' ,marginTop:'10px' }}>
                                 {
                                     files.length == 0 ? <span>No file selected</span> :
                                         files.map((item, index) => (
@@ -151,7 +174,7 @@ export const SubmitRequest = () => {
                     </div>
                     <div className='input-div-demo'>
                         <div className='submit-button' onClick={validate_request_data}>
-                            Submit
+                           {loading? <div className='loader'></div>:<span>Submit</span> }
                         </div>
                     </div>
                 </div>

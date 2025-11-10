@@ -17,9 +17,8 @@ import { AdminAppbar } from '../appbar/admin_appbar';
 import { TransactionHistory } from './agent/transaction_history';
 import { TransactionHistoryAdmin } from './admin/transaction_history_admin';
 const loginType = localStorage.getItem('loginType');
-
-
-
+console.log('logintype from homepage');
+console.log(loginType);
 
 export const Homepage = () => {
     const getScreen=()=>{

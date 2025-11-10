@@ -1,7 +1,7 @@
 
 
-// let server_address = 'http://127.0.0.1:8000/';
-let server_address='https://etymo-5cpb.onrender.com/';
+let server_address = 'http://127.0.0.1:8000/';
+// let server_address='https://etymo-5cpb.onrender.com/';
 
 
 // export async function storeRequest(type, name, email, mobile, description, documents) {
@@ -153,10 +153,13 @@ export async function storeCaCsDetails(name,specialization,role,email,mobile,reg
         alert(data.message)
         if(data.message==='submitted'){
             return 'success';
+        }else{
+            alert(data.message);
         }
     } catch (error) {
         alert("can't reach to server");
         console.log('error',error)
+        return 'error';
     }
 
 }
@@ -175,8 +178,10 @@ export async function updateRequestStatus(requestID,requestStatus,requestInstruc
         )
         const data=await respose.json()
         console.log(data)
+        return data.message;
     }catch(error){
         console.log(error)
+        return('server not responding');
     }
 }
 

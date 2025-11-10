@@ -1,5 +1,1 @@
-/manifest.json   /manifest.json   200
-/favicon.ico     /favicon.ico     200
-/static/*        /static/:splat   200
-/resetpassword/* /index.html     200
-/*               /index.html     200
+/* /index.html 200
