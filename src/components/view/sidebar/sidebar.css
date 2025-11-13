@@ -34,9 +34,16 @@
     padding-left: 15px;
     
 }
-.selected{
-    background-color: rgba(239, 239, 239, 1);
+.sidebar-option:hover{
+    color: rgb(104, 177, 241);
+    background-color: rgb(238, 238, 238);
+  
+    
 }
+.selected,.selected:hover{
+    background-color: rgb(214, 214, 214);
+}
+
 
 .login{
     /* flex: 1; */

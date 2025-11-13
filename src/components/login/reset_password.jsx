@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate,useLocation } from 'react-router-dom';
 import './login.css'
 import login from '../assets/login4.svg'
 import Logo from '../assets/Logo.png'
@@ -8,11 +8,15 @@ import hideIcon from '../assets/Hide Icon.png'
 import unHideIcon from '../assets/unhide.svg'
 import successImg from '../assets/success.svg'
 export const ResetPassword = () => {
-    
+     const { search } = useLocation();
+     const query = new URLSearchParams(search);
+     const email = query.get("email");
+     const token = query.get("token");
+     console.log(email,token)
     const [resetSuccess, setResetSuccess] = useState(false)
     // const { email, token } = useParams();
-    const email='sawantsanket855@gmail.com'
-    const token ='UulhXBMM-pXyA9v3XpF4tBZUxKSF9eRttXcWkhqzWIQ'
+    // const email='sawantsanket855@gmail.com'
+    // const token ='UulhXBMM-pXyA9v3XpF4tBZUxKSF9eRttXcWkhqzWIQ'
     const navigate = useNavigate()
     const [loader, setLoader] = useState(false);
     const [inputError, setInputError] = useState([false, false])
@@ -33,7 +37,7 @@ export const ResetPassword = () => {
 
                     <div className="inputs">
                         <div className='input' style={{ display: 'flex', alignItems: 'center' }}>
-                            <span>{email}</span>
+                            <span style={{marginLeft:'15px'}}>{email}</span>
                         </div>
 
                         {resetSuccess ?
@@ -46,11 +50,11 @@ export const ResetPassword = () => {
 
                             <div>
                                 <div className="input" style={{ position: 'relative' }}>
-                                    <input style={{ border: inputError[0] ? '2px solid red' : '' }} placeholder='Password' className='input' type={hidePassword ? "password" : "text"} value={password} onChange={(e) => { setInputError([false, false, false, false]); setPassword(e.target.value.trim()) }} />
+                                    <input style={{ border: inputError[0] ? '2px solid red' : '' ,paddingLeft:'15px'}} placeholder='Password' className='input' type={hidePassword ? "password" : "text"} value={password} onChange={(e) => { setInputError([false, false, false, false]); setPassword(e.target.value.trim()) }} />
                                     <div onClick={() => { setHidePassword(!hidePassword) }} style={{ width: '20px', position: 'absolute', right: '20px', top: '20px', display: 'flex', alignItems: 'center' }}> <img src={hidePassword ? hideIcon : unHideIcon} alt="" /></div>
                                 </div>
                                 <div className="input" style={{ position: 'relative' }}>
-                                    <input style={{ border: inputError[1] ? '2px solid red' : '' }} placeholder='Confirm Password' className='input' type={hideConPassword ? "password" : "text"} value={confirmPass} onChange={(e) => { setInputError([false, false, false, false]); setConfirmPass(e.target.value.trim()) }} />
+                                    <input style={{ border: inputError[1] ? '2px solid red' : '' ,paddingLeft:'15px'}} placeholder='Confirm Password' className='input' type={hideConPassword ? "password" : "text"} value={confirmPass} onChange={(e) => { setInputError([false, false, false, false]); setConfirmPass(e.target.value.trim()) }} />
                                     <div onClick={() => { setHideConPassword(!hideConPassword) }} style={{ width: '20px', position: 'absolute', right: '20px', top: '20px', display: 'flex', alignItems: 'center' }}> <img src={hideConPassword ? hideIcon : unHideIcon} alt="" /></div>
                                 </div>
 

@@ -24,7 +24,7 @@ function App() {
         <Route path="/register" element={<Registration />} />
         <Route path="/submitotp/:email" element={<Otp />} />
         <Route path="/verifyemail" element={<VerifyEmail />} />
-        <Route path="/resetpassword/:email/:token" element={<ResetPassword />} />
+        <Route path="/resetpassword" element={<ResetPassword />} />
         <Route path="/homepage" element={<Homepage/>}/>
         <Route path="/sendotp" element={<SendOtp/>}/>
         <Route path="/sendresetpassword" element={<SendResetPasswordEmail/>}/>

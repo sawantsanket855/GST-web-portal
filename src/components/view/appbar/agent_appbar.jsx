@@ -3,7 +3,7 @@ import './appbar.css'
 import Logo from '../../assets/new_logo.svg'
 import Search from '../../assets/search.svg'
 import Notification from '../../assets/Notification.svg'
-import Profile from '../../assets/profile.svg'
+import Profile from '../../assets/user_default.png'
 import { AppContext } from '../../provider'
 export const AgentAppbar=()=>{
     const {p_balance,p_getBalance} = useContext(AppContext);
@@ -23,7 +23,7 @@ export const AgentAppbar=()=>{
         </div>
         <div style={{display:'flex', alignItems:'center'}}>
         <span style={{fontFamily:'Roboto',fontSize:'20',fontWeight:'bolder', marginLeft:'10px',marginRight:'20px'}}>Balance: {p_balance}</span>
-        <img style={{marginLeft:'20px'}} src={Profile} alt="" />
+        <img style={{marginLeft:'20px',height:'25px',width:'25px'}} src={Profile} alt="" />
         <span style={{fontFamily:'Roboto',fontSize:'20',fontWeight:'bolder', marginLeft:'10px',marginRight:'20px'}}>Agent</span>
         </div>
             </div>

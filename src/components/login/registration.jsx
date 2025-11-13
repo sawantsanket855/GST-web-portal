@@ -95,18 +95,18 @@ export const Registration = () => {
 
                     <div className="inputs">
                         <div className='input'>
-                            <input style={{ border: inputError[0] ? '2px solid red' : '' }} placeholder='Enter your name' className='input' type="text" value={username} onChange={(e) => { setInputError([false, false, false, false]); setUsername(e.target.value) }} />
+                            <input style={{ border: inputError[0] ? '2px solid red' : '' ,paddingLeft:'15px'}} placeholder='Enter your name' className='input' type="text" value={username} onChange={(e) => { setInputError([false, false, false, false]); setUsername(e.target.value) }} />
                         </div>
                         <div className='input'>
-                            <input style={{ border: inputError[1] ? '2px solid red' : '' }} placeholder='Enter your email ID' className='input' type="email" value={email} onChange={(e) => { setInputError([false, false, false, false]); setEmail(e.target.value.trim()) }} />
+                            <input style={{ border: inputError[1] ? '2px solid red' : '',paddingLeft:'15px' }} placeholder='Enter your email ID' className='input' type="email" value={email} onChange={(e) => { setInputError([false, false, false, false]); setEmail(e.target.value.trim()) }} />
                         </div>
                         <div className='input-link-div'><a className='input-link' href='/sendotp'>Login with OTP</a></div>
                         <div className="input" style={{ position: 'relative' }}>
-                            <input style={{ border: inputError[2] ? '2px solid red' : '' }} placeholder='Password' className='input' type={hidePassword ? "password" : "text"} value={password} onChange={(e) => { setInputError([false, false, false, false]); setPassword(e.target.value.trim()) }} />
+                            <input style={{ border: inputError[2] ? '2px solid red' : '',paddingLeft:'15px' }} placeholder='Password' className='input' type={hidePassword ? "password" : "text"} value={password} onChange={(e) => { setInputError([false, false, false, false]); setPassword(e.target.value.trim()) }} />
                             <div onClick={() => { setHidePassword(!hidePassword) }} style={{ width: '20px', position: 'absolute', right: '20px', top: '20px', display: 'flex', alignItems: 'center' }}> <img src={hidePassword ? hideIcon : unHideIcon} alt="" /></div>
                         </div>
                         <div className="input" style={{ position: 'relative' }}>
-                            <input style={{ border: inputError[3] ? '2px solid red' : '' }} placeholder='Confirm Password' className='input' type={hideConPassword ? "password" : "text"} value={confirmPass} onChange={(e) => { setInputError([false, false, false, false]); setConfirmPass(e.target.value.trim()) }} />
+                            <input style={{ border: inputError[3] ? '2px solid red' : '',paddingLeft:'15px' }} placeholder='Confirm Password' className='input' type={hideConPassword ? "password" : "text"} value={confirmPass} onChange={(e) => { setInputError([false, false, false, false]); setConfirmPass(e.target.value.trim()) }} />
                             <div onClick={() => { setHideConPassword(!hideConPassword) }} style={{ width: '20px', position: 'absolute', right: '20px', top: '20px', display: 'flex', alignItems: 'center' }}> <img src={hideConPassword ? hideIcon : unHideIcon} alt="" /></div>
                         </div>
 
@@ -143,7 +143,7 @@ export const Registration = () => {
                                 Already have an Account?
                             </span>
                             <a style={{ fontSize: '14', fontWeight: '500', color: 'rgba(54, 59, 186, 1)', marginRight: '7px' }} href="/login">
-                                Register
+                                Login
                             </a>
                         </div>
                     </div>

@@ -1,5 +1,5 @@
-let server_address = 'http://127.0.0.1:8000/';
-// let server_address='https://etymo-5cpb.onrender.com/';
+// let server_address = 'http://127.0.0.1:8000/';
+let server_address='https://etymo-5cpb.onrender.com/';
 
 export async function storeRequest(type, name, email, mobile, description, documents) {
     console.log('in storeRequest')
